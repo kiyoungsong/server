@@ -1,0 +1,11 @@
+C:\Users\Song\Desktop\IronServer\Core\IronClient\obj\Debug\netstandard2.0\IronClient.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Core\IronClient\obj\Debug\netstandard2.0\IronClient.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Core\IronClient\bin\Debug\netstandard2.0\IronClient.dll.config
+C:\Users\Song\Desktop\IronServer\Core\IronClient\bin\Debug\netstandard2.0\IronClient.deps.json
+C:\Users\Song\Desktop\IronServer\Core\IronClient\bin\Debug\netstandard2.0\IronClient.dll
+C:\Users\Song\Desktop\IronServer\Core\IronClient\bin\Debug\netstandard2.0\IronClient.pdb
+C:\Users\Song\Desktop\IronServer\Core\IronClient\bin\Debug\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Core\IronClient\bin\Debug\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Core\IronClient\obj\Debug\netstandard2.0\IronClient.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Core\IronClient\obj\Debug\netstandard2.0\IronClient.dll
+C:\Users\Song\Desktop\IronServer\Core\IronClient\obj\Debug\netstandard2.0\IronClient.pdb

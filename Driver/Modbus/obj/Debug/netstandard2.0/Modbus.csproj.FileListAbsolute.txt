@@ -1,0 +1,16 @@
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\Modbus.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\Modbus.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\Modbus.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\EasyModbusTCPCore.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\DriverInterface.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\bin\Debug\netstandard2.0\EasyModbusTCPCore.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus\obj\Debug\netstandard2.0\Modbus.pdb

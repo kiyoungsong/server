@@ -1,0 +1,130 @@
+﻿<AntDesign.Menu DefaultSelectedKeys=@(new[] { "1" }) DefaultOpenKeys=@(new[] { "sub1" }) Mode="AntDesign.MenuMode.Inline" Style="font-size:medium" InlineCollapsed="@Collapsed">
+    @if (Collapsed)
+    {
+        <!-- Main -->
+        <AntDesign.MenuItem @onclick="((x) => ChangedPage(Index))">
+            <AntDesign.Space>
+                <AntDesign.SpaceItem>
+                    <AntDesign.Icon Class="MenuIcon" Type="home" Theme="outline" Width="20" Height="20"></AntDesign.Icon>
+                    <span>Home</span>
+                </AntDesign.SpaceItem>
+            </AntDesign.Space>
+        </AntDesign.MenuItem>
+
+        <!-- Setting -->
+        <AntDesign.MenuItem @onclick="((x) => ChangedPage(EditLoginDisplay))">
+            <AntDesign.Space>
+                <AntDesign.SpaceItem>
+                    <AntDesign.Icon Class="MenuIcon" Type="edit" Theme="outline" Width="20" Height="20"></AntDesign.Icon>
+                    <span>Edit</span>
+                </AntDesign.SpaceItem>
+            </AntDesign.Space>
+        </AntDesign.MenuItem>
+        @foreach (var channel in Data.XMLInfo.ChannelList)
+        {
+            <span hidden="hidden">@Settitle(channel.Value.Name);</span>
+
+            <AntDesign.SubMenu TitleTemplate="@channelTitle">
+
+                @foreach (var driver in channel.Value.DriverList)
+                {
+                    <AntDesign.MenuItem @onclick="@((x) => ChangedPage(channel.Value.Name + "." + driver.Value.Name +
+                                                         "." + driver.Value.IOFileName))">
+                        <AntDesign.Space>
+                            <AntDesign.SpaceItem>
+                                <AntDesign.Icon Class="MenuIcon" Type="tool" Theme="outline" Width="20" Height="20"></AntDesign.Icon>
+                                <span>@driver.Value.Name</span>
+                            </AntDesign.SpaceItem>
+                        </AntDesign.Space>
+                    </AntDesign.MenuItem>
+                }
+            </AntDesign.SubMenu>
+        }
+    }
+    else
+    {
+        <!-- Main -->
+        <AntDesign.MenuItem Style="pointer-events:none; margin:1px;" Disabled="true">
+            <span>Main</span>
+        </AntDesign.MenuItem>
+        <AntDesign.MenuItem Style="pointer-events:none; margin:0px; height:auto;">
+            <Divider Style="margin:0px;"></Divider>
+        </AntDesign.MenuItem>
+        <AntDesign.MenuItem @onclick="((x) => ChangedPage(Index))">
+            <AntDesign.Space>
+                <AntDesign.SpaceItem>
+                    <AntDesign.Icon Class="MenuIcon" Type="home" Theme="outline" Width="20" Height="20"></AntDesign.Icon>
+                </AntDesign.SpaceItem>
+                <AntDesign.SpaceItem>
+                    <span>Home</span>
+                </AntDesign.SpaceItem>
+            </AntDesign.Space>
+        </AntDesign.MenuItem>
+
+        <!-- Setting -->
+        <AntDesign.MenuItem Style="pointer-events:none; margin:1px;" Disabled="true">
+            <span>Setting</span>
+        </AntDesign.MenuItem>
+        <AntDesign.MenuItem Style="pointer-events:none; margin:0px; height:auto;">
+            <Divider Style="margin:0px;"></Divider>
+        </AntDesign.MenuItem>
+        <AntDesign.MenuItem @onclick="((x) => ChangedPage(EditLoginDisplay))">
+            <AntDesign.Space>
+                <AntDesign.SpaceItem>
+                    <AntDesign.Icon Class="MenuIcon" Type="edit" Theme="outline" Width="20" Height="20"></AntDesign.Icon>
+                    <span>Edit</span>
+                </AntDesign.SpaceItem>
+            </AntDesign.Space>
+        </AntDesign.MenuItem>
+
+        <AntDesign.MenuItem Style="pointer-events:none; margin:1px;" Disabled="true">
+            <span>Channels</span>
+        </AntDesign.MenuItem>
+        <AntDesign.MenuItem Style="pointer-events:none; margin:0px; height:auto;">
+            <Divider Style="margin:0px;"></Divider>
+        </AntDesign.MenuItem>
+        @foreach (var channel in Data.XMLInfo.ChannelList)
+        {
+            <span hidden="hidden">@Settitle(channel.Value.Name);</span>
+
+            <AntDesign.SubMenu TitleTemplate="@channelTitle">
+
+                @foreach (var driver in channel.Value.DriverList)
+                {
+                    <AntDesign.MenuItem @onclick="@((x) => ChangedPage(channel.Value.Name + "." + driver.Value.Name +
+                                                         "." + driver.Value.IOFileName))">
+                        <AntDesign.Space>
+                            <AntDesign.SpaceItem>
+                                <AntDesign.Icon Class="MenuIcon" Type="tool" Theme="outline" Width="20" Height="20"></AntDesign.Icon>
+                                <span>@driver.Value.Name</span>
+                            </AntDesign.SpaceItem>
+                        </AntDesign.Space>
+                    </AntDesign.MenuItem>
+                }
+            </AntDesign.SubMenu>
+        }
+    }
+</AntDesign.Menu>
+
+<style>
+    .MenuIcon {
+        margin-bottom: 15px;
+    }
+</style>
+@code{
+    string Index = "Index";
+    string EditLoginDisplay = "EditLoginDisplay";
+
+    protected object Settitle(string channel)
+    {
+        channelTitle =
+        @<AntDesign.Space>
+             <AntDesign.SpaceItem>
+                 <AntDesign.Icon Class="MenuIcon" Type="deployment-unit" Theme="outline" Width="18" Height="18"></AntDesign.Icon>
+                 <span>@channel</span>
+             </AntDesign.SpaceItem>
+        </AntDesign.Space>;
+
+return channelTitle;
+}
+}

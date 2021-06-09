@@ -1,0 +1,5 @@
+﻿@page "/"
+@page "/Index"
+
+<h2> Index</h2>
+<h2> dd</h2>

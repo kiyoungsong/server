@@ -1,0 +1,16 @@
+﻿using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Helpers
+{
+    public static class IJSExtensions
+    {
+        public static ValueTask<object> SaveFile(this IJSRuntime js, string fileName, byte[] contents)
+        {
+            return js.InvokeAsync<object>("saveAsFile", fileName, Convert.ToBase64String(contents));
+        }
+    }
+}

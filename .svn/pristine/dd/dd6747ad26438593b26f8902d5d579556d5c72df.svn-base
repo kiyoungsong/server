@@ -1,0 +1,198 @@
+﻿using IronWeb.Data;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace IronWeb.Pages
+{
+    public partial class DataPage
+    {
+        [Parameter]
+        public string PagePath { get; set; }
+
+        [Parameter]
+        public TableTag tableTag { get; set; }
+
+        [Parameter]
+        public List<TableTag> tableTags { get; set; }
+
+        public int Intervaltime { get; set; } = 3;
+
+        public string xmlName = "";
+        public string channelName = "";
+        public string driverName = "";
+
+        public List<TableTag> trendList = new List<TableTag>();
+        public Dictionary<string, TableTag> tagTrendDic = new Dictionary<string, TableTag>();
+
+        public string forwardForm = "[";
+        public string backwardForm = "]";
+        public string preData = string.Empty;
+        int i = 0;
+
+        protected override void OnInitialized()
+        {
+            //Load Trend Data
+            Task t = Task.Factory.StartNew( async () =>
+            {
+                while (true)
+                {
+                    if (tagTrendDic.Count > 0)
+                    {
+                        if(i == 30)
+                        {
+                            preData = "";
+                        }
+
+                        string strData = preData;
+                        string currentTime = DateTime.Now.ToString("HH:mm:ss.fff");
+
+                        strData += @"{""time"":" + $@"""{currentTime}"",";
+
+                        // 태그들의 키값 만듬 밑의 형태
+                        // [{ time:time, tag1:value1, tag2:value2 },
+                        // { time: time, tag1: value1, tag2: value2 }]
+                        for (int i = 0; i < trendList.Count; i++)
+                        {
+                            strData += @$"""{trendList[i].id}"":{trendList[i].Value}";
+
+                            // 마지막이 아니면 { "key" : "value" }, <-, 이걸 포함
+                            if (i != trendList.Count - 1)
+                            {
+                                strData += ",";
+                            }
+                        }
+
+                        strData += "}";
+
+                        // 여기서 런타입으로 호출
+                        await jsrumtime.InvokeVoidAsync("GenerateLineChart", forwardForm + strData + backwardForm);
+
+                        preData = strData + ",";
+                        i++;
+                    }
+                    else
+                    {
+                        i = 0;
+                    }
+
+                    Thread.Sleep(Intervaltime * 1000);
+                }
+            });
+        }
+
+        protected void OnTrend(TableTag tableTag)
+        {
+            string strTrend = channelName + "." + driverName + "." + tableTag.id;
+
+            if (tableTag.IsTrend)
+            {
+                tableTag.FullName = strTrend;
+
+                if (trendList.Count < 10)
+                {
+                    trendList.Add(tableTag);
+                    tagTrendDic[tableTag.FullName] = tableTag;
+                }
+                else
+                {
+                    tableTag.IsTrend = !tableTag.IsTrend;
+                }
+            }
+            else
+            {
+                if (trendList.Count > 0 && trendList.Contains(tableTag))
+                {
+                    trendList.Remove(tableTag);
+                }
+            }
+
+        }
+
+        protected override void OnParametersSet()
+        {
+            string[] temp = PagePath.Split('.');
+            channelName = temp[0];
+            driverName = temp[1];
+            xmlName = temp[2] + "." + temp[3];
+
+            int i = 0;
+            tableTags = new List<TableTag>();
+            trendList = new List<TableTag>();
+
+            foreach (var ch in DataXml.ChannelList)
+            {
+                if (ch.Value.Name == channelName)
+                {
+                    foreach (var de in ch.Value.DeviceList)
+                    {
+                        if (de.Value.IOFileName == xmlName)
+                        {
+                            foreach (var tag in de.Value.TagList)
+                            {
+                                tableTags.Add(new TableTag()
+                                {
+                                    Index = i,
+                                    id = tag.id,
+                                    type = tag.type,
+                                    Value = tag.Value,
+                                    SourceTime = tag.SourceTime,
+                                    ServerTime = tag.ServerTime,
+                                    IsTrend = tag.IsTrend
+                                });
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            // readData
+            Task t = Task.Factory.StartNew(() =>
+            {
+                int i = 0;
+                while (i < 1000)
+                {
+                    foreach (var tag in tableTags)
+                    {
+                        Random rn = new Random();
+
+                        tag.Value = rn.Next(0, 1000).ToString();
+                        tag.SourceTime = DateTime.Now.ToString("hh:mm:ss.fffff");
+                    }
+
+                    InvokeAsync(StateHasChanged);
+                    Thread.Sleep(100);
+                    i++;
+                }
+            });
+        }
+    }
+
+
+    public class TableTag
+    {
+        public int Index { get; set; }
+        public string id { get; set; }
+        public string type { get; set; }
+        public string Value { get; set; } = "0";
+        public string ServerTime { get; set; } = DateTime.Now.ToString("hh:mm:ss:fffff");
+        public string SourceTime { get; set; } = DateTime.Now.ToString("hh:mm:ss:fffff");
+        public bool IsTrend { get; set; }
+        public string FullName { get; set; }
+    }
+}

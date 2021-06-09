@@ -1,0 +1,36 @@
+﻿<AntDesign.Menu DefaultSelectedKeys=@(new[] { "1" }) DefaultOpenKeys=@(new[] { "sub1" }) Mode="AntDesign.MenuMode.Inline" Style="font-size:medium" InlineCollapsed="@Collapsed">
+    <AntDesign.MenuItem @onclick="((x) => ChangedPage(index))">
+        <AntDesign.Icon Type="home" Theme="fill"></AntDesign.Icon>
+        <span>Home</span>
+    </AntDesign.MenuItem>
+    @foreach (var channel in Data.DataXml.ChannelList)
+    {
+        <span hidden="hidden">@Settitle(channel.Value.Name);</span>
+
+        <AntDesign.SubMenu TitleTemplate="@channelTitle">
+
+            @foreach (var device in channel.Value.DeviceList)
+            {
+                <AntDesign.MenuItem @onclick="@((x) => ChangedPage(channel.Value.Name + "." + device.Value.Name + 
+                                                         "." + device.Value.IOFileName))">
+                    <AntDesign.Icon Type="tool" Theme="outline" Width="18" Height="18"></AntDesign.Icon>
+                    @device.Value.Name
+                </AntDesign.MenuItem>
+            }
+        </AntDesign.SubMenu>
+    }
+
+</AntDesign.Menu>
+@code{
+
+    protected object Settitle(string channel)
+    {
+        channelTitle =
+        @<span>
+        <AntDesign.Icon Type = "deployment-unit" Theme = "outline" Width="18" Height="18" ></AntDesign.Icon>
+        <span> @channel </span>
+        </span>;
+
+    return channelTitle;
+    }
+}

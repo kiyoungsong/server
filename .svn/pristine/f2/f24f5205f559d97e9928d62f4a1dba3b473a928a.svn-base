@@ -1,0 +1,45 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using System.ComponentModel.DataAnnotations.Schema;
+@using Microsoft.JSInterop;
+@inject IJSRuntime jsrumtime;
+
+<AntDesign.Space Id="color">
+    <AntDesign.SpaceItem>
+        <AntDesign.Button Type="primary" Icon="clear" @onclick="@Add">Add</AntDesign.Button>
+    </AntDesign.SpaceItem>
+    <AntDesign.SpaceItem>
+        <AntDesign.Button Type="primary" Icon="clear" @onclick="@Clear">Clear</AntDesign.Button>
+    </AntDesign.SpaceItem>
+    <AntDesign.SpaceItem>
+        <AntDesign.Button Type="primary" Icon="download" @onclick="@Save">Save</AntDesign.Button>
+    </AntDesign.SpaceItem>
+</AntDesign.Space>
+<br />
+
+<div class="card shadow mb-4" style="margin:0; padding:0">
+    <div class="card-body">
+        <div id="scrollDiv" style="overflow:auto; height:300px">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:20%">Time</th>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:10%">Source</th>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:10%">Server</th>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:60%">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in LogManager.LogList)
+                    {
+                        <tr>
+                            <td>@log.Time</td>
+                            <td>@log.Source</td>
+                            <td>@log.Server</td>
+                            <td>@log.Message</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

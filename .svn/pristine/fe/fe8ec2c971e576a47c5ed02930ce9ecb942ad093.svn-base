@@ -1,0 +1,26 @@
+﻿@page "/"
+@page "/Index"
+@using Data;
+
+<Button>
+
+</Button>
+<!--<MatTable class="mat-elevation-z5">
+    <MatTableHeader>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Horsepower</th>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>@context.Name</td>
+        <td>@String.Format("${0:f2}", @context.Price)</td>
+        <td>@context.Horsepower</td>
+    </MatTableRow>
+</MatTable>
+    -->
+
+@code
+{
+
+
+}

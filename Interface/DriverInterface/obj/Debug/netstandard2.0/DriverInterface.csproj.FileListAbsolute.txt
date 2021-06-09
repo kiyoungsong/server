@@ -1,0 +1,8 @@
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\bin\Debug\netstandard2.0\DriverInterface.deps.json
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\bin\Debug\netstandard2.0\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\bin\Debug\netstandard2.0\DriverInterface.pdb
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\obj\Debug\netstandard2.0\DriverInterface.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\obj\Debug\netstandard2.0\DriverInterface.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\obj\Debug\netstandard2.0\DriverInterface.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\obj\Debug\netstandard2.0\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Interface\DriverInterface\obj\Debug\netstandard2.0\DriverInterface.pdb

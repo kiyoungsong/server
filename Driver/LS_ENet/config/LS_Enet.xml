@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="Enet" type="TCP" ipaddr="192.168.0.120" port="2004" scanmode="0" desc="" connectTime="1" requestTime="1" requestCount="3">
+	<Tag id="FB1" memory="F" addr="91" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="FW1" memory="F" addr="9" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="NB1" memory="N" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="NW1" memory="N" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="PB1" memory="P" addr="10" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="PW1" memory="P" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MB1" memory="M" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="MW1" memory="M" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="KB1" memory="K" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="KW1" memory="K" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="TB1" memory="T" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="TW1" memory="T" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="CB1" memory="C" addr="03" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="CW1" memory="C" addr="3" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="LB1" memory="L" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="LW1" memory="L" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="DB1" memory="D" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="DW1" memory="D" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="ZB1" memory="Z" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="ZW1" memory="Z" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="SB1" memory="S" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="SW1" memory="S" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+</Driver>

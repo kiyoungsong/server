@@ -1,0 +1,64 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IronWeb.Data
+{
+    public class LogManager : Controller
+    {
+        public List<LogData> LogList { get; set; }
+
+        public LogManager()
+        {
+            LogList = new List<LogData>();
+        }
+
+        public IActionResult Index()
+        {
+            return Save();
+        }
+
+        public IActionResult Save()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Time, Source, Server, Message");
+
+            foreach (var item in LogList)
+            {
+                builder.AppendLine($"{item.Time},{item.Source},{item.Server},{item.Message}");
+            }
+
+            return File(Encoding.UTF8.GetBytes(builder.ToString()), "text/csv", $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}.csv");
+        }
+
+        public void WriteLog(string message, bool isServer)
+        {
+            if (isServer)
+            {
+
+            }
+            else
+            {
+                LogList.Add(new LogData() { Time = DateTime.Now.ToString("hh:mm:ss.fff"),
+                                               Server = "Server", Source = "Source", Message = message
+                });
+            }
+        }
+
+        public void Clear()
+        {
+            LogList.Clear();
+        }
+    }
+
+    public struct LogData
+    {
+        public string Time { get; set; }
+        public string Source { get; set; }
+        public string Server { get; set; }
+        public string Message { get; set; }
+    }
+}

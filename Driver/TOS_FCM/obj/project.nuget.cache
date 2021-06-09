@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "wvVjcPk6/plHMHqPf2kJojGybY0Fi8dgSwvH4GQB/a4taTKoVLmAFUfBzbDfPMBnXWgM8Ziuwb8km0ddeKeUnQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Song\\Desktop\\IronServer\\Driver\\TOS_FCM\\TOS_FCM.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Song\\.nuget\\packages\\system.io.ports\\5.0.0\\system.io.ports.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

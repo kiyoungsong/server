@@ -1,0 +1,86 @@
+﻿using IronUtilites;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Data
+{
+    public static class DriverManager
+    {
+        const string configFolder = "config";
+        const string channelFileName = "ChannelInfo.xml";
+
+        // 채널 로드
+        public static void LoadXML()
+        {
+            // 경로 체크 용
+            string path = Directory.GetCurrentDirectory();
+
+            // 경로 수정 필요
+            string configPath = "..\\..\\bin" + Path.DirectorySeparatorChar + configFolder + Path.DirectorySeparatorChar;
+
+            XmlModel xmlInfo = (XmlModel)XMLParser.DeserializeXML(configPath + channelFileName, typeof(XmlModel));
+
+            if (xmlInfo != null)
+            {
+                foreach (var channel in xmlInfo.TagChannelnfo)
+                {
+                    XMLInfo.ChannelList[channel.IId] = new Channel() { Name = channel.Name, DriverList = new Dictionary<int, Device>() };
+
+                    foreach (var device in xmlInfo.TagDeviceInfo)
+                    {
+                        if (channel.IId == device.IchannelID)
+                        {
+                            XMLInfo.ChannelList[channel.IId].DriverList[device.IId] = new Device()
+                            {
+                                Name = device.DriverName,
+                                IOFileName = device.StrIOFile,
+                                TagList = new List<Tag>()
+                            };
+
+                            Driver driver = (Driver)XMLParser.DeserializeXML(configPath + device.StrIOFile, typeof(Driver));
+
+                            if (driver != null)
+                            {
+                                XMLInfo.ChannelList[channel.IId].DriverList[device.IId].TagList = driver.Tag;
+
+                                XMLInfo.ChannelList[channel.IId].DriverList[device.IId].TableTags = new Dictionary<string, TableTag>();
+
+                                int idx = 0;
+
+                                foreach (var tag in XMLInfo.ChannelList[channel.IId].DriverList[device.IId].TagList)
+                                {
+                                    XMLInfo.ChannelList[channel.IId].DriverList[device.IId].TableTags.Add($"{channel.Name}.{driver.id}.{tag.id}" ,new TableTag()
+                                    {
+                                        Index = idx,
+                                        id = tag.id,
+                                        Value = "0",
+                                        type = tag.type,
+                                        ServerTime = DateTime.Now.ToString("hh:mm:ss.fffff"),
+                                        SourceTime = DateTime.Now.ToString("hh:mm:ss.fffff"),
+                                        IsTrend = false,
+                                        FullName = $"{channel.Name}.{device.DriverName}.{tag.id}"
+                                    });
+
+                                    idx++;
+                                }
+
+                                XMLInfo.ChannelList[channel.IId].DriverList[device.IId].TableTagList = new List<TableTag>(XMLInfo.ChannelList[channel.IId].DriverList[device.IId].TableTags.Values);
+                            }
+                            else
+                            {
+                                // 시스템 로그 찍기 xml 인식불가
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // 시스템 로그 찍기 xml 인식불가
+            }
+        }
+    }
+}

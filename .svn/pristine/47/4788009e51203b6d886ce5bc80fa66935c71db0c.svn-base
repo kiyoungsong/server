@@ -1,0 +1,17 @@
+﻿using System;
+
+namespace IronWeb.Data
+{
+    public class TableTag
+    {
+        public int Index { get; set; }
+        public string id { get; set; }
+        public string type { get; set; }
+        public string Value { get; set; } = "0";
+        public string ServerTime { get; set; } = DateTime.Now.ToString("hh:mm:ss.fffff");
+        public string SourceTime { get; set; } = DateTime.Now.ToString("hh:mm:ss.fffff");
+        public string Status { get; set; } = "Bad";
+        public bool IsTrend { get; set; }
+        public string FullName { get; set; }
+    }
+}

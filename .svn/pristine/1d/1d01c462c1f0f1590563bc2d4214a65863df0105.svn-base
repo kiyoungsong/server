@@ -1,0 +1,34 @@
+﻿<Menu DefaultSelectedKeys=@(new[] { "1" }) DefaultOpenKeys=@(new[] { "sub1" }) Mode="MenuMode.Inline" Style="font-size:medium" InlineCollapsed="@Collapsed">
+    <MenuItem @onclick="((x) => ChangedPage(index))">
+        <Icon Type="home" Theme="fill"></Icon>
+        <span>Home</span>
+    </MenuItem>
+    @foreach (var channel in DataXml.ChannelList)
+    {
+        <span hidden="hidden">@Settitle(channel.Value.Name);</span>
+
+        <SubMenu TitleTemplate="@channelTitle">
+
+            @foreach (var device in channel.Value.DeviceList)
+            {
+                <MenuItem @onclick="((x) => ChangedPage(device.Value.Url))">
+                    <Icon Type="tool" Theme="outline" Width="18" Height="18"></Icon>
+                    @device.Value.Name
+                </MenuItem>
+            }
+        </SubMenu>
+    }
+
+</Menu>
+@code{
+    protected object Settitle(string channel)
+    {
+        channelTitle =
+        @<span>
+        <Icon Type = "deployment-unit" Theme = "outline" Width="18" Height="18" ></Icon>
+        <span> @channel </span>
+        </span>;
+
+    return channelTitle;
+    }
+}

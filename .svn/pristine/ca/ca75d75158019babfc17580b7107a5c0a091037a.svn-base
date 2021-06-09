@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="PM1" path="D:\Projects\TOS_ALDMonitoring\src\" type="TCP" ipServerAddr="127.0.0.1" serverPort="12345" scanmode="0" desc="">
+	<Tag id="recipe" memory="M" addr="0" scanrate="100" type="string" redis="true" size="1"/>
+	<Tag id="index" memory="M" addr="0" scanrate="100" type="uint" redis="true" size="1"/>
+	<Tag id="valveSetting" memory="M" addr="0" scanrate="100" type="int" redis="true" size="16"/>
+	<Tag id="communicationLog" memory="M" addr="0" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="filterMin" memory="M" addr="0" scanrate="100" type="int" redis="true" size="1"/>
+	<Tag id="filterMax" memory="M" addr="0" scanrate="100" type="int" redis="true" size="1"/>
+	<Tag id="processing" memory="M" addr="0" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="filename" memory="M" addr="0" scanrate="100" type="string" redis="true" size="1"/>
+</Driver>

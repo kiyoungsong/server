@@ -1,0 +1,28 @@
+﻿<Menu Style="background-color:#1890ff; height:4.5%;">
+    <Button Type="button" OnClick="ToggleCollapsed" Style="background-color: transparent; border:hidden; margin-top:10px;">
+        @if (collapsed)
+        {
+            <Icon Type="arrow-right" Theme="outline" Height="25" Width="25" Style="color:white" />
+        }
+        else
+        {
+            <Icon Type="menu" Theme="outline" Height="25" Width="25" Style="color:white" />
+        }
+    </Button>
+</Menu>
+
+
+
+@code{
+    [Parameter]
+    public EventCallback<bool> CollapsedChanged { get; set; }
+
+    bool collapsed;
+
+    protected void ToggleCollapsed()
+    {
+        collapsed = !collapsed;
+        CollapsedChanged.InvokeAsync(collapsed);
+    }
+
+}

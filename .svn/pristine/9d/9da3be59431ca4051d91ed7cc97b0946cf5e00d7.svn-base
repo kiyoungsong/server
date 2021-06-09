@@ -1,0 +1,152 @@
+﻿<!-- CPU -->
+<div class="cardCustome">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        CPU
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">@Data.SettingInfo.ServerAddr</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-server fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- RAM -->
+<div class="cardCustome">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        RAM
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">@Data.SettingInfo.Port</div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-ethernet fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HDD Addr -->
+<div class="cardCustome">
+    <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        HDD
+                    </div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Data.SettingInfo.ClientAddr</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-address-book fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- OS Addr -->
+<div class="cardCustome">
+    <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        OS
+                    </div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            @GetOS()
+                            @GetBitType()
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@strOS @bitType Bit</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-address-book fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cardCustome">
+    <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        OS
+                    </div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            @GetOS()
+                            @GetBitType()
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@strOS @bitType Bit</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-address-book fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cardCustome{
+        width:20%;
+        padding:20px;
+    }
+</style>
+
+@code{
+    int bitType;
+    string strOS;
+
+    object GetOS()
+    {
+        switch (System.Environment.OSVersion.Version.Major)
+        {
+            case 6 when System.Environment.OSVersion.Version.Minor == 1:
+                strOS = "Windows 7 ";
+                break;
+            case 10:
+                strOS = "Windows 10 ";
+                break;
+        }
+
+        return null;
+    }
+
+    object GetBitType()
+    {
+        if (IntPtr.Size == 8)
+        {
+            bitType = 64;
+        }
+        else
+        {
+            bitType = 32;
+        }
+
+        return null;
+    }
+}

@@ -1,0 +1,67 @@
+﻿using IronUtilites;
+using IronWeb.Data;
+using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Shared
+{
+    public partial class MainLayout
+    {
+        public string XmlPath { get; set; } = "";
+        bool collapsed = false;
+        string configFolder = "config";
+        string channelFileName = "ChannelInfo.xml";
+        
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            string path = Directory.GetCurrentDirectory();
+
+            //경로 수정 필요
+            string configPath = "..\\bin" + Path.DirectorySeparatorChar + configFolder + Path.DirectorySeparatorChar;
+
+            LoadXml xmlInfo = (LoadXml)XMLParser.DeserializeXML(configPath + channelFileName, typeof(LoadXml));
+            
+            if (xmlInfo != null)
+            {
+                DataXml.ChannelList = new Dictionary<int, Channel>();
+
+                foreach (var channel in xmlInfo.TagChannelnfo)
+                {
+                    DataXml.ChannelList[channel.IId] = new Channel() { Name = channel.Name, DeviceList = new Dictionary<int, Device>() };                    
+                    
+                    foreach (var device in xmlInfo.TagDeviceInfo)
+                    {
+                        if(channel.IId == device.IchannelID)
+                        {
+                            DataXml.ChannelList[channel.IId].DeviceList[device.IId] = new Device() { Name= device.DriverName ,IOFileName = device.StrIOFile, 
+                                                                                                      Url = "DataPage", TagList = new List<Tag>() };
+
+                            Driver driver = (Driver)XMLParser.DeserializeXML(configPath + device.StrIOFile , typeof(Driver));
+
+                            if (driver != null)
+                            {
+                                DataXml.ChannelList[channel.IId].DeviceList[device.IId].TagList = driver.Tag;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void CollapsedChanged(bool collapsed)
+        {
+            this.collapsed = collapsed;
+        }
+
+        protected void ChangePath(string Name)
+        {
+            XmlPath = Name;
+        }
+    }
+}

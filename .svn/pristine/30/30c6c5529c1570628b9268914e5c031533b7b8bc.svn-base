@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronWeb", "IronWeb.csproj", "{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronUtilites", "..\Interface\IronUtilites\IronUtilites.csproj", "{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IronClient", "..\Core\IronClient\IronClient.csproj", "{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Configuration", "..\..\..\Downloads\UA-.NETStandard-master (1)\UA-.NETStandard-master\Libraries\Opc.Ua.Configuration\Opc.Ua.Configuration.csproj", "{68A7CFC1-0CCD-488D-8430-26E9E321E130}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Client", "..\..\..\Downloads\UA-.NETStandard-master (1)\UA-.NETStandard-master\Libraries\Opc.Ua.Client\Opc.Ua.Client.csproj", "{E029E318-D0F1-405D-8C20-C81DE98BD5FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opc.Ua.Core", "..\..\..\Downloads\UA-.NETStandard-master (1)\UA-.NETStandard-master\Stack\Opc.Ua.Core\Opc.Ua.Core.csproj", "{B46E4B6C-A605-401A-8A04-5F1FA11F61B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68A7CFC1-0CCD-488D-8430-26E9E321E130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A7CFC1-0CCD-488D-8430-26E9E321E130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A7CFC1-0CCD-488D-8430-26E9E321E130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A7CFC1-0CCD-488D-8430-26E9E321E130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E029E318-D0F1-405D-8C20-C81DE98BD5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E029E318-D0F1-405D-8C20-C81DE98BD5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E029E318-D0F1-405D-8C20-C81DE98BD5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E029E318-D0F1-405D-8C20-C81DE98BD5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46E4B6C-A605-401A-8A04-5F1FA11F61B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46E4B6C-A605-401A-8A04-5F1FA11F61B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46E4B6C-A605-401A-8A04-5F1FA11F61B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46E4B6C-A605-401A-8A04-5F1FA11F61B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {552C0050-5031-4D20-9A10-A8D171A21AEB}
+	EndGlobalSection
+EndGlobal

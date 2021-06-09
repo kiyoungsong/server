@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Interface\DriverInterface\DriverInterface.csproj" />
+    <ProjectReference Include="..\..\Interface\IronUtilites\IronUtilites.csproj" />
+    <ProjectReference Include="..\DriverBase\DriverBase.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT EXIST &quot;..\..\..\bin&quot; MD &quot;..\..\..\bin&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\driver&quot; MD &quot;..\..\..\bin\driver&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(TargetDir)*&quot; &quot;..\..\..\bin\driver&quot;" />
+  </Target>
+
+</Project>

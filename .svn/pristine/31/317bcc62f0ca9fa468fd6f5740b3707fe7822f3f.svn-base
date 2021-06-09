@@ -1,0 +1,308 @@
+﻿using IronWeb.Data;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using Opc.Ua;
+using Opc.Ua.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+
+namespace IronWeb.Pages
+{
+    public partial class Index
+    {
+        #region var
+        private string pagePath;
+        [CascadingParameter]
+        public string PagePath
+        {
+            get => pagePath;
+            set
+            {
+                this.pagePath = value;
+
+                if (value != "")
+                {
+                    tableTags = new List<TableTag>();
+                    trendList = new List<TableTag>();
+                    tagTrendDic = new Dictionary<string, TableTag>();
+                    IsTrend = false;
+                    IsRead = false;
+                    Init();
+                }
+            }
+        }
+
+        [Parameter]
+        public TableTag tableTag { get; set; }
+        [Parameter]
+        public List<TableTag> tableTags { get; set; }
+
+        #region Setting 
+        public string xmlName = "";
+        public string channelName = "";
+        public string driverName = "";
+
+        string tempServerAddr { get; set; }
+        string tempPortNum { get; set; }
+        string tempClientAddr { get; set; }
+        public int Intervaltime { get; set; } = 3;
+        #endregion
+
+
+        bool IsTrend { get; set; } = false;
+        bool IsRead { get; set; } = false;
+
+        public List<TableTag> trendList = new List<TableTag>();
+        public Dictionary<string, TableTag> tagTrendDic;
+        string forwardForm = "[";
+        string backwardForm = "]";
+        string preData = string.Empty;
+        int i = 0;
+        Task readTask;
+        Task trendTask;
+
+        bool dialogIsOpen = false;
+
+        IronClient.IronOPCUAClient ironClient;
+        #endregion
+
+        protected void Init()
+        {
+            if (readTask != null)
+            {
+                readTask.Wait();
+                readTask.Dispose();
+            }
+
+            if (trendTask != null)
+            {
+                trendTask.Wait();
+                trendTask.Dispose();
+            }
+
+            LoadXml();
+            IsTrend = true;
+            IsRead = true;
+            readTask = Task.Run(() => ReadData());
+            trendTask = Task.Run(() => UpdateTrend());
+        }
+
+        protected void Connect()
+        {
+            /*
+            ironClient = new IronClient.IronOPCUAClient();
+            ironClient.ServerUrl = $"opc.tcp://{Data.SettingInfo.ServerAddr}:48021";
+            ironClient.NamespaceNumber = 2;
+            ironClient.Connect();
+            */
+
+            try
+            {
+                // Define the UA Client application
+                ApplicationInstance application = new ApplicationInstance();
+                application.ApplicationName = "Quickstart Console Reference Client";
+                application.ApplicationType = ApplicationType.Client;
+
+                // load the application configuration.
+                application.LoadApplicationConfiguration("ConsoleReferenceClient.Config.xml", false).Wait();
+                // check the application certificate.
+                application.CheckApplicationInstanceCertificate(false, 0).Wait();
+
+                // create the UA Client object and connect to configured server.
+                UAClient uaClient = new UAClient(application.ApplicationConfiguration);
+
+                if (uaClient.Connect())
+                {
+                    // Run tests for available methods.
+                    uaClient.ReadNodes();
+                    uaClient.WriteNodes();
+                    uaClient.Browse();
+                    uaClient.CallMethod();
+
+                    uaClient.SubscribeToDataChanges();
+                    // Wait for some DataChange notifications from MonitoredItems
+                    System.Threading.Thread.Sleep(20000);
+
+                    uaClient.Disconnect();
+                }
+                else
+                {
+                    Console.WriteLine("Could not connect to server!");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
+        }
+
+        protected void Disconnect()
+        {
+            ironClient.Disconnect();
+        }
+
+        #region Show Data
+        protected void LoadXml()
+        {
+            string[] temp = Data.SettingInfo.SelectedDriverName.Split('.');
+            channelName = temp[0];
+            driverName = temp[1];
+            xmlName = temp[2] + "." + temp[3];
+
+            int i = 0;
+
+            foreach (var ch in DataXml.ChannelList)
+            {
+                if (ch.Value.Name == channelName)
+                {
+                    foreach (var de in ch.Value.DeviceList)
+                    {
+                        if (de.Value.IOFileName == xmlName)
+                        {
+                            foreach (var tag in de.Value.TagList)
+                            {
+                                tableTags.Add(new TableTag()
+                                {
+                                    Index = i,
+                                    id = tag.id,
+                                    type = tag.type,
+                                    Value = tag.Value,
+                                    SourceTime = tag.SourceTime,
+                                    ServerTime = tag.ServerTime,
+                                    IsTrend = tag.IsTrend
+                                });
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+        }
+
+        // 각 태그를 새로 불러오기 때문에 트랜드가 초기화됨 (전체태그를 한번만 읽어오는부분 고려)
+        protected async void UpdateTrend()
+        {
+            while (IsTrend)
+            {
+                if (tagTrendDic.Count > 0)
+                {
+                    if (i == 30)
+                    {
+                        // 데이터 초기화 부분 고려
+                        preData = "";
+                    }
+
+                    string strData = preData;
+                    string currentTime = DateTime.Now.ToString("HH:mm:ss.fff");
+
+                    strData += @"{""time"":" + $@"""{currentTime}"",";
+
+                    for (int i = 0; i < trendList.Count; i++)
+                    {
+                        strData += @$"""{trendList[i].id}"":{trendList[i].Value}";
+
+                        if (i != trendList.Count - 1)
+                        {
+                            strData += ",";
+                        }
+                    }
+
+                    strData += "}";
+
+                    // 여기서 런타입으로 호출
+                    await jsrumtime.InvokeVoidAsync("GenerateLineChart", forwardForm + strData + backwardForm);
+
+                    preData = strData + ",";
+                    i++;
+                }
+                else
+                {
+                    i = 0;
+                }
+
+                Thread.Sleep(Intervaltime * 1000);
+            }
+        }
+
+        protected void ReadData()
+        {
+            while (IsRead)
+            {
+                foreach (var tag in tableTags)
+                {
+                    Random rn = new Random();
+
+                    tag.Value = rn.Next(0, 1000).ToString();
+                    tag.SourceTime = DateTime.Now.ToString("hh:mm:ss.fffff");
+                }
+
+                InvokeAsync(StateHasChanged);
+                Thread.Sleep(100);
+                i++;
+            }
+        }
+
+        protected void OnOffTrend(TableTag tableTag)
+        {
+            string strTrend = channelName + "." + driverName + "." + tableTag.id;
+
+            if (tableTag.IsTrend)
+            {
+                tableTag.FullName = strTrend;
+
+                if (trendList.Count < 10)
+                {
+                    trendList.Add(tableTag);
+                    tagTrendDic[tableTag.FullName] = tableTag;
+                }
+                else
+                {
+                    tableTag.IsTrend = !tableTag.IsTrend;
+                }
+            }
+            else
+            {
+                if (trendList.Count > 0 && trendList.Contains(tableTag))
+                {
+                    trendList.Remove(tableTag);
+                }
+            }
+
+        }
+        #endregion
+
+        #region Dodal
+        void OpenDialog()
+        {
+            dialogIsOpen = true;
+            tempServerAddr = Data.SettingInfo.ServerAddr;
+            tempPortNum = Data.SettingInfo.Port.ToString();
+            tempClientAddr = Data.SettingInfo.ClientAddr;
+        }
+
+        void OkClick()
+        {
+            Data.SettingInfo.ServerAddr = tempServerAddr;
+            Data.SettingInfo.Port = Convert.ToInt32(tempPortNum);
+            Data.SettingInfo.ClientAddr = tempClientAddr;
+            dialogIsOpen = false;
+        }
+        #endregion
+    }
+}

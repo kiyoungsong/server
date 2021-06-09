@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="MELSEC" type="TCP" ipaddr="192.168.0.20" port="2000" engine="Melsec.py" desc="" connectTime="1" requestTime="1" requestCount="3">
+  <!--
+  <Tag id="Test0" memory="W" addr="0" scanrate="100" type="short" redis="true" size="2" dword ="0"/>
+  <Tag id="Test1" memory="X" addr="1" scanrate="100" type="bool" redis="true" size="16" dword ="0"/>
+  -->
+  <Tag id="X00" memory="X" addr="0" scanrate="100" type="bool" redis="true" size="3" dword ="0"/>
+  <Tag id="X01" memory="X" addr="1" scanrate="100" type="bool" redis="true" size="5" dword ="0"/>
+  <Tag id="X02" memory="X" addr="2" scanrate="100" type="bool" redis="true" size="10" dword ="0"/>
+  <Tag id="Y00" memory="Y" addr="0" scanrate="100" type="bool" redis="true" size="3" dword ="0"/>
+  <Tag id="Y01" memory="Y" addr="1" scanrate="100" type="bool" redis="true" size="5" dword ="0"/>
+  <Tag id="Y02" memory="Y" addr="2" scanrate="100" type="bool" redis="true" size="10" dword ="0"/>
+  <Tag id="B00" memory="B" addr="0" scanrate="100" type="bool" redis="true" size="3" dword ="0"/>
+  <Tag id="B01" memory="B" addr="1" scanrate="100" type="bool" redis="true" size="5" dword ="0"/>
+  <Tag id="B02" memory="B" addr="2" scanrate="100" type="bool" redis="true" size="10" dword ="0"/>
+  <Tag id="D00" memory="D" addr="0" scanrate="100" type="short" redis="true" size="1" dword ="0"/>
+  <Tag id="D01" memory="D" addr="1" scanrate="100" type="short" redis="true" size="1" dword ="0"/>
+  <Tag id="D02" memory="D" addr="2" scanrate="100" type="short" redis="true" size="1" dword ="0"/>
+</Driver>

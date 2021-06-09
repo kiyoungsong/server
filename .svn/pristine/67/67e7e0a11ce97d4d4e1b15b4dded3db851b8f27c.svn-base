@@ -1,0 +1,73 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using System.ComponentModel.DataAnnotations.Schema;
+@using Microsoft.JSInterop;
+@inject IJSRuntime jsrumtime;
+
+<AntDesign.Space Id="color">
+    <AntDesign.SpaceItem>
+        <AntDesign.Button Type="primary" Icon="clear" @onclick="@Add">Clear</AntDesign.Button>
+    </AntDesign.SpaceItem>
+    <AntDesign.SpaceItem>
+        <AntDesign.Button Type="primary" Icon="download">Save</AntDesign.Button>
+    </AntDesign.SpaceItem>
+</AntDesign.Space>
+<br />
+
+<div class="card shadow mb-4" style="margin:0; padding:0">
+    <div class="card-body">
+        <div id="scrollDiv" style="overflow:auto; height:300px">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:20%">Time</th>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:10%">Source</th>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:10%">Server</th>
+                        <th style="position:sticky; top:0px; background-color:whitesmoke; width:60%">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in logs)
+                    {
+                        <tr>
+                            <td>@log.time</td>
+                            <td>@log.Source</td>
+                            <td>@log.Server</td>
+                            <td>@log.Message</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+@code{
+
+    List<LogData> logs = new List<LogData>() { new LogData() { time = "1", Source = "1", Server = "1", Message = "2" },
+            new LogData(){time = "1", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "2", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "3", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "4", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "5", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "6", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "7", Source = "1", Server = "1", Message = "1" },
+            new LogData(){time = "8", Source = "1", Server = "1", Message = "1" }
+        };
+
+    async void Add()
+    {
+        logs.Add(new LogData() { time = "22", Source = "1", Server = "1", Message = "1" });
+        await jsrumtime.InvokeVoidAsync("AutoScroll");
+    }
+
+
+    public struct LogData
+    {
+        public string time { get; set; }
+        public string Source { get; set; }
+        public string Server { get; set; }
+        public string Message { get; set; }
+    }
+}

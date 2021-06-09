@@ -1,0 +1,54 @@
+﻿@inherits LayoutComponentBase
+
+<Layout>
+    <HeaderLayout CollapsedChanged="CollapsedChanged"></HeaderLayout>
+    <Layout>
+        <Sider Width="200" Collapsed="@collapsed" Class="site-layout-background">
+            <SideBar Collapsed="@collapsed" DataXml="@dataInfo"></SideBar>
+        </Sider>
+        <Layout Style=" padding: 24px 0px 24px 24px;">
+            <Content Class="site-layout-background" Style=" padding: 24px; margin: 0; min-height: 800px;">
+                @Body
+            </Content>
+            <FooterLayout></FooterLayout>
+        </Layout>
+    </Layout>
+</Layout>
+
+
+<!--Style-->
+<style>
+    #components-layout-demo-top-side-2 .logo {
+        width: 120px;
+        height: 31px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px 28px 16px 0;
+        float: left;
+    }
+
+    .site-layout-background {
+        background: #fff;
+    }
+</style>
+
+<style>
+    #components-layout-demo-top-side-2 .logo {
+        width: 120px;
+        height: 31px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px 28px 16px 0;
+        float: left;
+    }
+
+    .site-layout-background {
+        background: #fff;
+    }
+</style>
+
+
+
+
+
+
+
+

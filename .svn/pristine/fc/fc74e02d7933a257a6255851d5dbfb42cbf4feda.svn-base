@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="ModbusRTU" type="Serial" port="COM1" baudrate="9600" scanmode="0" desc="" connectTime="1" requestTime="1" requestCount="3">
+	<Tag id="MB0" memory="M" addr="0A" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="MB01" memory="M" addr="0A" scanrate="100" type="bool" redis="true" size="10"/>
+	<Tag id="IW0" memory="M" addr="0" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW0" memory="M" addr="0" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW02" memory="M" addr="2" scanrate="100" type="ushort" redis="true" size="1"/>
+	<Tag id="MW09" memory="M" addr="9" scanrate="100" type="float" redis="true" size="5"/>
+	<Tag id="MW10" memory="M" addr="10" scanrate="100" type="int" redis="true" size="1"/>
+	<Tag id="MW20" memory="M" addr="20" scanrate="100" type="uint" redis="true" size="1"/>
+	<Tag id="MW22" memory="M" addr="22" scanrate="100" type="long" redis="true" size="1"/>
+	<Tag id="MW26" memory="M" addr="26" scanrate="100" type="ulong" redis="true" size="1"/>
+	<Tag id="MW30" memory="M" addr="30" scanrate="100" type="double" redis="true" size="1"/>
+	<Tag id="MW35" memory="M" addr="35" scanrate="100" type="string" redis="true" size="1"/>
+</Driver>
+
+

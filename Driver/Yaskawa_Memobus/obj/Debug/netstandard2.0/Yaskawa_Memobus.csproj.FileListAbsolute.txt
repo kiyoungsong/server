@@ -1,0 +1,16 @@
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\Yaskawa_Memobus.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\Yaskawa_Memobus.dll
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\Yaskawa_Memobus.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\DriverBase.dll
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\DriverInterface.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\bin\Debug\netstandard2.0\DriverBase.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.dll
+C:\Users\Song\Desktop\IronServer\Driver\Yaskawa_Memobus\obj\Debug\netstandard2.0\Yaskawa_Memobus.pdb

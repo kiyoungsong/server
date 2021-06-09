@@ -1,0 +1,490 @@
+﻿using DriverBase;
+using DriverInterface;
+using IronUtilites;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Xml;
+
+namespace Mistubishi_Melsec
+{
+    public class Melsec : TCP, IDriver
+    {
+        public enum MemoryType
+        {
+            b = 0xA8,
+            x = 0x9C,
+            y = 0x9D,
+
+            w = 0xB4
+        }
+
+        Communication comm;
+        Driver xmlInfo;
+        Dictionary<string, Tag> tagInfos = new Dictionary<string, Tag>();
+
+        bool hexAddress = false;
+        int requestCount = 3;
+        int connectTime = 1;
+        int requestTime = 1;
+        public bool isConnected = false;
+
+        public const int bit_Max_Addr = 0x7fff;
+        public const int word_Max_Addr = 0x1ffff;
+
+        public bool CommunicationStatus()
+        {
+            return comm.CommunicationStatus();
+        }
+
+        public void Connect()
+        {
+            comm = new Communication(false, "", "", false, xmlInfo.ipaddr, ushort.Parse(xmlInfo.port), requestTime, connectTime);
+            comm.Open();
+            isConnected = comm.isConnect;
+            comm.SetTimeout(requestTime);
+        }
+
+        public void Disconnect()
+        {
+            comm.Close();
+        }
+
+        public void GetTagInfo(ref string[] strName, ref string[] strType, ref bool[] bRedis, ref int[] iSize, ref string[] strMemory)
+        {
+            try
+            {
+                List<string> nameList = new List<string>();
+                List<string> typeList = new List<string>();
+                List<bool> redisList = new List<bool>();
+                List<int> sizeList = new List<int>();
+                List<string> memoryList = new List<string>();
+
+                foreach (var tag in xmlInfo.Tag)
+                {
+                    try
+                    {
+                        int size = int.Parse(tag.size);
+                        if (size > 0)
+                        {
+                            tag.memory = tag.memory.ToLower();
+                            uint.TryParse(tag.scanrate, out uint scantime);
+                            bool.TryParse(tag.redis, out bool redis);
+
+                            int addr = 0;
+                            if (hexAddress)
+                            {
+                                addr = Definition.HexToDec(tag.addr);
+                            }
+                            else
+                            {
+                                addr = int.Parse(tag.addr);
+                            }
+
+                            {
+                                int memory = (int)Enum.Parse(typeof(MemoryType), tag.memory);
+
+                                //if ((memory <= 23 && (addr + size) > bit_Max_Addr) || (memory >= 24 && (addr + size) > word_Max_Addr))
+                                //{
+                                //    throw new Exception("Address range exceeded the limit");
+                                //}
+
+                                //if (memory <= 23)
+                                //{
+                                //    if (!(tag.type == "bool" || tag.type == "short"))
+                                //    {
+                                //        throw new Exception("Memory Type 'B' must be DataType 'bool' or 'short'");
+                                //    }
+                                //}
+
+                                tag.addr = addr.ToString();
+                            }
+
+                            tagInfos.Add(tag.id, tag);
+
+                            nameList.Add(tag.id);
+                            typeList.Add(tag.type);
+                            redisList.Add(redis);
+                            sizeList.Add(size);
+                            memoryList.Add(tag.memory);
+                        }
+                        else
+                        {
+                            IronUtilites.LogManager.Manager.WriteLog("Warning", "Tag Size must be over 0");
+                        }
+                    }
+                    catch (OverflowException ex)
+                    {
+                        IronUtilites.LogManager.Manager.WriteLog("Exception", "integer type size is overflow. : " + ex.Message);
+                    }
+                    catch (FormatException ex)
+                    {
+                        IronUtilites.LogManager.Manager.WriteLog("Exception", "Only integer type can be used for size. : " + ex.Message);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        IronUtilites.LogManager.Manager.WriteLog("Exception", "TagName Duplicate. : " + ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        IronUtilites.LogManager.Manager.WriteLog("Exception", "Get Driver Tag Failed messaged : " + ex.Message);
+                        Debug.WriteLine("Get Driver Tag Failed messaged : " + ex.Message);
+                    }
+                }
+
+                strName = nameList.ToArray();
+                strType = typeList.ToArray();
+                bRedis = redisList.ToArray();
+                iSize = sizeList.ToArray();
+                strMemory = memoryList.ToArray();
+            }
+            catch (Exception ex)
+            {
+                IronUtilites.LogManager.Manager.WriteLog("Exception", "Get Driver Info Failed messaged : " + ex.Message);
+                Debug.WriteLine("Get Driver Info Failed messaged : " + ex.Message);
+            }
+        }
+
+        public void SetDriverInfo(bool bHexAddress, int nScanMode, string param)
+        {
+            try
+            {
+                hexAddress = bHexAddress;
+                string strFilename = param;
+
+                string currentDir = Directory.GetCurrentDirectory();
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(currentDir + "\\Config\\" + strFilename);
+
+                
+                xmlInfo = new Driver();
+                xmlInfo = (Driver)XMLParser.DeserializeXML(currentDir + "\\Config\\" + strFilename, typeof(Driver));
+
+                if (Convert.ToInt32(xmlInfo.requestCount) != 0)
+                {
+                    requestCount = Convert.ToInt32(xmlInfo.requestCount);
+                }
+                if (Convert.ToInt32(xmlInfo.connectTime) != 0)
+                {
+                    connectTime = Convert.ToInt32(xmlInfo.connectTime);
+                }
+                if (Convert.ToInt32(xmlInfo.requestTime) != 0)
+                {
+                    requestTime = Convert.ToInt32(xmlInfo.requestTime);
+                }
+            }
+            catch (Exception ex)
+            {
+                IronUtilites.LogManager.Manager.WriteLog("Exception", "Read Xml File Failed Error Message : " + ex.Message);
+                Debug.WriteLine("Read Xml File Failed Error Message : " + ex.Message);
+            }
+        }
+
+        public bool ReadTag(string tagName, ref object data)
+        {
+            List<int> memoryList = new List<int>();
+            Dictionary<int, List<string>> memoryDic = new Dictionary<int, List<string>>();
+            Dictionary<string, object> valueLists = new Dictionary<string, object>();
+            bool bErr = false;
+            int devType;
+            try
+            {
+                devType = (int)Enum.Parse(typeof(MemoryType), tagInfos[tagName].memory);
+                memoryList.Add(devType);
+                memoryDic[devType] = new List<string>() { tagName };
+            }
+            catch (Exception ex)
+            {
+                IronUtilites.LogManager.Manager.WriteLog("Error", "MELSECNET DataType Not Definition : " + ex.Message);
+                return false;
+            }
+
+            if (devType == (int)MemoryType.b || devType == (int)MemoryType.x || devType == (int)MemoryType.y)
+            {
+                bErr = GetBits(memoryList, memoryDic, valueLists, (int)devType);
+            }
+            else
+            {
+                bErr = GetRegisters(memoryList, memoryDic, valueLists, (int)devType);
+            }
+
+            if (!bErr)
+            {
+                throw new Exception("Melsecnet Read Fail");
+            }
+            else
+            {
+                data = valueLists[tagName];
+            }
+
+            return bErr;
+        }
+
+        public bool ReadTags(string[] tagNames, ref object[] datas)
+        {
+            Dictionary<MemoryType, VarClass> varClassDIc = new Dictionary<MemoryType, VarClass>();
+            Dictionary<string, object> valueLists = new Dictionary<string, object>();
+
+            bool bBitErr = true;
+            bool bWordErr = true;
+
+            foreach (var tagName in tagNames)
+            {
+                if (!int.TryParse(tagInfos[tagName].addr, out int addr))
+                {
+                    continue;
+                }
+
+                CreateLists(varClassDIc, (MemoryType)Enum.Parse(typeof(MemoryType), tagInfos[tagName].memory), tagName, addr);
+            }
+
+            foreach (var devType in varClassDIc.Keys)
+            {
+                if (devType == MemoryType.b || devType == MemoryType.x || devType == MemoryType.y)
+                {
+                    GetBits(varClassDIc[devType].memoryList, varClassDIc[devType].memoryDic, valueLists, (int)devType);
+                }
+                else
+                {
+                    GetRegisters(varClassDIc[devType].memoryList, varClassDIc[devType].memoryDic, valueLists, (int)devType);
+                }
+            }
+
+            for (int i = 0; i < tagNames.Length; i++)
+            {
+                if (valueLists.ContainsKey(tagNames[i]))
+                {
+                    datas[i] = valueLists[tagNames[i]];
+                }
+            }
+
+            if (bBitErr && bWordErr)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool WriteTag(string tagName, object data)
+        {
+            if (tagInfos.ContainsKey(tagName))
+            {
+                int singleAddr = 0;
+                int singleSize = 0;
+                string dataType = "";
+
+                try
+                {
+                    singleAddr = int.Parse(tagInfos[tagName].addr);
+                    singleSize = int.Parse(tagInfos[tagName].size);
+
+                    dataType = tagInfos[tagName].type;
+
+                    if (dataType == "")
+                    {
+                        throw new ArgumentException("Type cannot be empty");
+                    }
+
+                    if (data is byte[] dataList)
+                    {
+                        int length = singleSize * (int)Enum.Parse(typeof(Definition.DataType), tagInfos[tagName].type.ToUpper());
+                        int devType = (int)Enum.Parse(typeof(MemoryType), tagInfos[tagName].memory);
+
+                        if (!comm.SetRegister(singleAddr, length, ref dataList, devType, requestCount, word_Max_Addr, 30))
+                        {
+                            return false;
+                        }
+                        /*
+                        if (dataType == Definition.BOOL)
+                        {
+                            if(!comm.SetBit(singleAddr, length, ref dataList, devType, requestCount, bit_Max_Addr, 30))
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            if(!comm.SetRegister(singleAddr, length, ref dataList, devType, requestCount, word_Max_Addr, 30))
+                            {
+                                return false;
+                            }
+                        }*/
+
+                        IronUtilites.LogManager.Manager.WriteLog("Console", $"Write Tag - TagName : {tagName} , WriteData : {BitConverter.ToString(dataList)}");
+
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogManager.Manager.WriteLog("Exception", ex.Message);
+                    LogManager.Manager.WriteLog("Exception", $"The Tag's Address, Size, memoryType is not Invalid, tag : {tagName}");
+                }
+            }
+
+            return false;
+        }
+
+        public bool WriteTags(string[] tagNames, object[] datas)
+        {
+            for (int i = 0; i < tagNames.Length; i++)
+            {
+                if(!WriteTag(tagNames[i], datas[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void CreateLists(Dictionary<MemoryType, VarClass> varClassDIc, MemoryType devType, string tagName, int addr)
+        {
+            if (!varClassDIc.ContainsKey(devType))
+            {
+                varClassDIc[devType] = new VarClass();
+                varClassDIc[devType].memoryList = new List<int>() { addr };
+                varClassDIc[devType].memoryDic = new Dictionary<int, List<string>>() { [addr] = new List<string>() { tagName } };
+            }
+            else
+            {
+                varClassDIc[devType].memoryList.Add(addr);
+
+                if (!varClassDIc[devType].memoryDic.ContainsKey(addr))
+                {
+                    varClassDIc[devType].memoryDic[addr] = new List<string>() { tagName };
+                }
+                else
+                {
+                    varClassDIc[devType].memoryDic[addr].Add(tagName);
+                }
+
+            }
+        }
+
+        private bool GetBits(List<int> bitList, Dictionary<int, List<string>> bitDic, Dictionary<string, object> valueLists, int devType)
+        {
+            int bitSize = 0;
+            byte[] bitBuff;
+
+            List<int> lengths = new List<int>();
+
+            bitList.Sort();
+
+            for (int i = 0; i < bitList.Count;)
+            {
+                foreach (string tagName in bitDic[bitList[i]])
+                {
+                    int addrSize = Convert.ToInt32(tagInfos[tagName].size) * (int)Enum.Parse(typeof(Definition.DataType), tagInfos[tagName].type.ToUpper());
+                    lengths.Add(addrSize);
+
+                    bitSize += addrSize;
+
+                    i++;
+                }
+            }
+
+            if (lengths.Count > 0)
+            {
+                bitBuff = new byte[bitSize * 2];
+
+
+                comm.GetBits(bitList.ToArray(), lengths.ToArray(), devType, ref bitBuff, requestCount, bit_Max_Addr, 30);
+
+                int index = 0;
+
+                for (int i = 0; i < bitList.Count;)
+                {
+                    foreach (string tagName in bitDic[bitList[i]])
+                    {
+                        int length = Convert.ToInt32(tagInfos[tagName].size) * (int)Enum.Parse(typeof(Definition.DataType), tagInfos[tagName].type.ToUpper());
+                        byte[] value = new byte[length * 2];
+                        int j = 0;
+
+                        for (; j < length * 2; j++)
+                        {
+                            value[j] = bitBuff[index + j];
+                        }
+
+                        valueLists.Add(tagName, value);
+
+                        index += j;
+                        i++;
+                    }
+                }
+
+            }
+
+            return true;
+        }
+
+        private bool GetRegisters(List<int> wordList, Dictionary<int, List<string>> wordDic, Dictionary<string, object> valueLists, int devType)
+        {
+            int wordSize = 0;
+            byte[] wordBuff;
+
+            List<int> lengths = new List<int>();
+
+            wordList.Sort();
+
+            for (int i = 0; i < wordList.Count;)
+            {
+                foreach (string tagName in wordDic[wordList[i]])
+                {
+                    int addrSize = Convert.ToInt32(tagInfos[tagName].size) * (int)Enum.Parse(typeof(Definition.DataType), tagInfos[tagName].type.ToUpper());
+                    lengths.Add(addrSize);
+
+                    wordSize += addrSize;
+
+                    i++;
+                }
+            }
+
+            if (lengths.Count > 0)
+            {
+                wordBuff = new byte[wordSize * 2];
+
+                comm.GetRegisters(wordList.ToArray(), lengths.ToArray(), devType, ref wordBuff, requestCount, word_Max_Addr, 30);
+
+                int index = 0;
+
+                for (int i = 0; i < wordList.Count;)
+                {
+                    foreach (string tagName in wordDic[wordList[i]])
+                    {
+                        int length = Convert.ToInt32(tagInfos[tagName].size) * (int)Enum.Parse(typeof(Definition.DataType), tagInfos[tagName].type.ToUpper());
+                        byte[] value = new byte[length * 2];
+                        int j = 0;
+
+                        for (; j < length * 2; j++)
+                        {
+                            value[j] = wordBuff[index + j];
+                        }
+
+                        valueLists.Add(tagName, value);
+
+                        index += j;
+                        i++;
+                    }
+                }
+
+            }
+
+            return true;
+        }
+    }
+
+    #region variables
+    public class VarClass
+    {
+        public List<int> memoryList = new List<int>();
+
+        public Dictionary<int, List<string>> memoryDic = new Dictionary<int, List<string>>();
+    }
+    #endregion
+}

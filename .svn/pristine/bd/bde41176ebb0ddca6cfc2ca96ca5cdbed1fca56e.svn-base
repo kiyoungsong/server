@@ -1,0 +1,14 @@
+﻿<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Home</h1>
+    <AntDesign.Space>
+        <SpaceItem>
+            <Button Type="primary" @onclick="@Connect">Connect</Button>
+        </SpaceItem>
+        <SpaceItem>
+            <Button Type="primary" @onclick="@Disconnect">Disconnect</Button>
+        </SpaceItem>
+        <SpaceItem>
+            <Button Type="primary" @onclick="@OpenDialog">EditSetting</Button>
+        </SpaceItem>
+    </AntDesign.Space>
+</div>

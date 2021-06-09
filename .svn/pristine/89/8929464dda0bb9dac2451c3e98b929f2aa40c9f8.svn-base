@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "TOS_FCM": {
+      "commandName": "Executable",
+      "executablePath": "D:\\Projects\\IronServer\\bin\\net462\\IronServer.exe",
+      "workingDirectory": "D:\\Projects\\IronServer\\bin\\net462"
+    }
+  }
+}

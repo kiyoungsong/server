@@ -1,0 +1,56 @@
+﻿using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Pages
+{
+    public partial class ButtonsPage
+    {
+        IronClient.IronOPCUAClient ironClient;
+
+        [Parameter]
+        public EventCallback<List<string>> EditSettingInfo { get; set; }
+        [Parameter]
+        public EventCallback<IronClient.IronOPCUAClient> ClientObject { get; set; }
+
+        protected void Connect()
+        {
+
+            ironClient = new IronClient.IronOPCUAClient();
+            ironClient.ServerUrl = $"opc.tcp://{Data.SettingInfo.ServerAddr}:{Data.SettingInfo.Port}";
+            ironClient.NamespaceNumber = 2;
+            ironClient.Connect();
+
+            if (ironClient.IsConnected)
+            {
+                // 시스템 로그
+                Data.SettingInfo.IsConnect = ironClient.IsConnected;
+                ClientObject.InvokeAsync(ironClient);
+            }
+        }
+
+        protected void Disconnect()
+        {
+            ironClient.Disconnect();
+
+            if (!ironClient.IsConnected)
+            {
+                // 시스템 로그
+                Data.SettingInfo.IsConnect = ironClient.IsConnected;
+                ClientObject.InvokeAsync(ironClient);
+            }
+        }
+
+        void OpenDialog()
+        {
+            List<string> settingList = new List<string>();
+            settingList.Add("true");
+            settingList.Add(Data.SettingInfo.ServerAddr);
+            settingList.Add(Data.SettingInfo.Port.ToString());
+            settingList.Add(Data.SettingInfo.ClientAddr);
+            EditSettingInfo.InvokeAsync(settingList);
+        }
+    }
+}

@@ -1,0 +1,16 @@
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\BoschCISS.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\BoschCISS.dll
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\BoschCISS.pdb
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\DriverBase.dll
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\DriverInterface.pdb
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\bin\Debug\netstandard2.0\DriverBase.pdb
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.dll
+C:\Users\Song\Desktop\IronServer\Driver\BoashCISS\obj\Debug\netstandard2.0\BoschCISS.pdb

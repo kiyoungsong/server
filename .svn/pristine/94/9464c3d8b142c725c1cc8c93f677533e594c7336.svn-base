@@ -1,0 +1,77 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Shared
+{
+    public partial class FooterLayout
+    {
+        string title = "Header";
+
+        List<TagData> tagDataList = new List<TagData>();
+        List<LogData> logDataList = new List<LogData>();
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            for(int i = 0; i < 50; i++)
+            {
+                tagDataList.Add(new TagData() { Index = i + 1, Name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + (i + 1) });
+                logDataList.Add(new LogData() { Timestamp = DateTime.Now.ToString(), Source = "so", Server = "ser", Message = "test" + i });
+            }
+        }
+
+        protected void WriteLog()
+        {
+            
+        }
+
+        protected void SaveLog()
+        {
+
+        }
+    }
+
+    class LogData
+    {
+        [DisplayName("Timestamp")]
+        public string Timestamp { get; set; }
+
+        [DisplayName("Source")]
+        public string Source { get; set; }
+
+        [DisplayName("Server")]
+        public string Server { get; set; }
+
+        [DisplayName("Message")]
+        public string Message { get; set; }
+    }
+
+
+
+
+    class TagData
+    {
+        [DisplayName("#")]
+        public int Index { get; set; }
+
+        [DisplayName("Name")]
+        public string Name { get; set; }
+
+        [DisplayName("Value")]
+        public string Value { get; set; }
+
+        [DisplayName("Data Type")]
+        public string DataType { get; set; }
+
+        [DisplayName("Source Time")]
+        public string SourceTime { get; set; }
+
+        [DisplayName("Server Time")]
+        public string ServerTime { get; set; }
+        public bool IsTrend { get; set; }
+    }
+}
+

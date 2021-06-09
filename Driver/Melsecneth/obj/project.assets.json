@@ -1,0 +1,109 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "DriverInterface/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/DriverInterface.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DriverInterface.dll": {}
+        }
+      },
+      "IronUtilites/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/IronUtilites.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IronUtilites.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DriverInterface/1.0.0": {
+      "type": "project",
+      "path": "../../Interface/DriverInterface/DriverInterface.csproj",
+      "msbuildProject": "../../Interface/DriverInterface/DriverInterface.csproj"
+    },
+    "IronUtilites/1.0.0": {
+      "type": "project",
+      "path": "../../Interface/IronUtilites/IronUtilites.csproj",
+      "msbuildProject": "../../Interface/IronUtilites/IronUtilites.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "DriverInterface >= 1.0.0",
+      "IronUtilites >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Song\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Song\\Desktop\\IronServer\\Driver\\Melsecneth\\Melsecneth.csproj",
+      "projectName": "Melsecneth",
+      "projectPath": "C:\\Users\\Song\\Desktop\\IronServer\\Driver\\Melsecneth\\Melsecneth.csproj",
+      "packagesPath": "C:\\Users\\Song\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Song\\Desktop\\IronServer\\Driver\\Melsecneth\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Song\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {
+            "C:\\Users\\Song\\Desktop\\IronServer\\Interface\\DriverInterface\\DriverInterface.csproj": {
+              "projectPath": "C:\\Users\\Song\\Desktop\\IronServer\\Interface\\DriverInterface\\DriverInterface.csproj"
+            },
+            "C:\\Users\\Song\\Desktop\\IronServer\\Interface\\IronUtilites\\IronUtilites.csproj": {
+              "projectPath": "C:\\Users\\Song\\Desktop\\IronServer\\Interface\\IronUtilites\\IronUtilites.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

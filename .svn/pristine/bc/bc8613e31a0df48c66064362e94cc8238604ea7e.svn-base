@@ -1,0 +1,192 @@
+﻿@page "/"
+@page "/Index"
+@using Data;
+@using Newtonsoft.Json.Linq;
+@inject ModalService modalService
+@inject IJSRuntime jsrumtime;
+
+
+<!--Top Buttons-->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Home</h1>
+    <a href="#">
+        <AntDesign.Space>
+            <SpaceItem>
+                <Button Type="primary" @onclick="@Connect" >Connect</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="primary" @onclick="@Disconnect">Disconnect</Button>
+            </SpaceItem>
+            <SpaceItem>
+                <Button Type="primary" @onclick="@OpenDialog">EditSetting</Button>
+            </SpaceItem>
+        </AntDesign.Space>
+
+    </a>
+</div>
+
+<div class="row">
+    <!-- Server Address -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Server Address
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Data.SettingInfo.ServerAddr</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Port Number -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Port
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Data.SettingInfo.Port</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Addr -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Client Address
+                        </div>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-auto">
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@Data.SettingInfo.ClientAddr</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connecting Status -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Connecting Status
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Data.SettingInfo.IsConnect</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (PagePath == "")
+{
+<div class="row">
+    <div class="col-xl-6">
+        <RadzenTabs Style="height:700px; width:1650px;">
+            <Tabs>
+                <RadzenTabsItem Text="DataView">
+                    <Empty/>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Trend">
+                    <Empty/>
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</div>
+}
+else
+{
+    <div class="row">
+        <div class="col-xl-6">
+            <RadzenTabs Style="height:700px; width:1650px;">
+                <Tabs>
+                    <RadzenTabsItem Text="DataView">                        
+                        <BlazorTable.Table TableItem="@TableTag" Items="@tableTags" PageSize="100" ColumnReorder="true" ShowSearchBar="true">
+                            <BlazorTable.Column TableItem="@TableTag" Title="#" Field="@(x => x.Index)" Sortable="true" DefaultSortColumn="true" Align="Align.Center" Width="3%" />
+                            <BlazorTable.Column TableItem="@TableTag" Title="Name" Field="@(x => x.id)" Sortable="true" Filterable="true" />
+                            <BlazorTable.Column TableItem="@TableTag" Title="Value" Field="@(x => x.Value)" />
+                            <BlazorTable.Column TableItem="@TableTag" Title="Source Time" Field="@(x => x.SourceTime)" Width="15%" />
+                            <BlazorTable.Column TableItem="@TableTag" Title="Server Time" Field="@(x => x.ServerTime)" Width="15%" />
+                            <BlazorTable.Column TableItem="@TableTag" Title="Trend" Width="5%" Align="Align.Center">
+                                <Template>
+                                    <Radzen.Blazor.RadzenSwitch @bind-Value="@context.IsTrend" Change="@((x) => OnOffTrend(context))" />
+                                </Template>
+                            </BlazorTable.Column>
+                            <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
+                        </BlazorTable.Table>
+                    </RadzenTabsItem>
+
+                    <RadzenTabsItem Text="Trend">
+                        @if (trendList.Count == 0)
+                        {
+                            <Empty />
+                        }
+                        else
+                        {
+                            <div id="chartdiv"></div>
+                        }
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>
+        </div>
+    </div>
+}
+
+<br />
+
+<!--컴포넌트로 빼는거 고려-->
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>Setting Page</MatDialogTitle>
+    <MatDialogContent>
+        <br />
+        <p>Server IP Address</p>
+        <MatTextField Id="ip" @bind-Value="tempServerAddr" Label="Server IP" Icon="favorite" IconTrailing="true" Outlined="true" />
+        <br />
+        <p>Port Number</p>
+        <MatTextField Id="tt" @bind-Value="tempPortNum" Label="Port Number" Icon="favorite" IconTrailing="true" Outlined="true" />
+        <br />
+        <p>client IP Address</p>
+        <MatTextField @bind-Value="tempClientAddr" Label="Client IP" Icon="favorite" IconTrailing="true" Outlined="true" />
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="@(e => { dialogIsOpen = false; })">No Thanks</MatButton>
+        <MatButton OnClick="@OkClick">Save</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code{
+    string tt = @"[{""time"":""14:05:33.900"",""italy"":1,""germany"":5,""uk"":3,""ko"":2},{""time"":""14:06:33:900"",""italy"":1,""germany"":2,""uk"":6,""ko"":3},{""time"":""14:07:33:900"",""italy"":3,""germany"":5,""uk"":2},{""time"":""14:08:33.900"",""italy"":4,""germany"":3,""uk"":6}]";
+
+
+}
+

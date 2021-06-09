@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DriverInterface", "DriverInterface\DriverInterface.csproj", "{63643A18-D2D1-4032-8D74-A3B4BB742B09}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronUtilites", "IronUtilites\IronUtilites.csproj", "{C5240F67-F500-4EDF-9765-C57C1D255A0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63643A18-D2D1-4032-8D74-A3B4BB742B09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63643A18-D2D1-4032-8D74-A3B4BB742B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63643A18-D2D1-4032-8D74-A3B4BB742B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63643A18-D2D1-4032-8D74-A3B4BB742B09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5240F67-F500-4EDF-9765-C57C1D255A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5240F67-F500-4EDF-9765-C57C1D255A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5240F67-F500-4EDF-9765-C57C1D255A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5240F67-F500-4EDF-9765-C57C1D255A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C774A02B-7F27-4C6F-8A5E-3ED09BA3A45F}
+	EndGlobalSection
+EndGlobal

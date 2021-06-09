@@ -1,0 +1,16 @@
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\ModbusRTU.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\ModbusRTU.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\ModbusRTU.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\DriverBase.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\DriverInterface.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\bin\Debug\netstandard2.0\DriverBase.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.dll
+C:\Users\Song\Desktop\IronServer\Driver\Modbus_RTU\obj\Debug\netstandard2.0\ModbusRTU.pdb

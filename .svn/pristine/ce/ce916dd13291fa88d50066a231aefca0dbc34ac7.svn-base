@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Melsecneth": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

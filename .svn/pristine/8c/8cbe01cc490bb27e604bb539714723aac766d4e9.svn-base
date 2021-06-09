@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Shared
+{
+    public partial class FooterLayout
+    {
+        protected void WriteLog()
+        {
+            
+        }
+
+        protected void SaveLog()
+        {
+
+        }
+    }
+}
+

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.Core" Version="2.31.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Interface\IronUtilites\IronUtilites.csproj" />
+    <ProjectReference Include="..\..\Interface\UIInterface\UIInterface\UIInterface.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "tE2Mn0g8wY9xdFx7uX6bJmHa0N+Q3O4DT5g0zgZIlCGEP9gDafy0E2mF4TIOHGV89PDx4vukSXvbUOt10aowQw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Song\\Desktop\\IronServer\\Interface\\IronUtilites\\IronUtilites.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Song\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Song\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

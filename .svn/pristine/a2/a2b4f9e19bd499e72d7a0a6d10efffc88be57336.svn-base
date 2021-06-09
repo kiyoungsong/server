@@ -1,0 +1,359 @@
+﻿using DriverBase;
+using IronUtilites;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
+
+namespace Mistubishi_Melsec
+{
+    class Communication : TCP
+    {
+        bool connectStatus = false;
+        ScriptEngine engine = null;
+        ScriptSource source = null;
+        ScriptScope scope = null;
+
+        Func<int, int, ushort, ushort, ushort, bool, byte[], string> makePacketResult;
+        Func<byte[], bool, string> exportDataResult;
+        Func<Dictionary<string, int>> initSize;
+        Func<Dictionary<string, string>> initValue;
+
+        Dictionary<string, int> initSizeArray;
+        Dictionary<string, byte> initDic;
+
+        public enum DataCommand
+        {
+            Read = 1,
+            Write = 2
+        };
+
+        public Communication(bool log = false, string name = "", string path = ".", bool server = false, string addr = "192.168.0.1", ushort port = 2004, int timeout = 1, int connectTime = 1) :
+           base(addr, port, log, name, path, server, timeout, connectTime)
+        {
+            engine = Python.CreateEngine();
+            source = engine.CreateScriptSourceFromFile("Melsec.py");
+            scope = engine.CreateScope();
+            source.Execute(scope);
+
+            initSize = scope.GetVariable<Func<Dictionary<string, int>>>("InitSize");
+            initValue = scope.GetVariable<Func<Dictionary<string, string>>>("InitValue");
+            makePacketResult = scope.GetVariable<Func<int, int, ushort, ushort, ushort, bool, byte[], string>>("MakePacket");
+            exportDataResult = scope.GetVariable<Func<byte[], bool, string>>("ExportData");
+            
+            Init();
+        }
+
+        public bool CommunicationStatus()
+        {
+            return connectStatus;
+        }
+
+        public void Connect()
+        {
+            Open();
+            connectStatus = true;
+        }
+
+        public void DIsConnect()
+        {
+            Close();
+            connectStatus = false;
+        }
+
+        public void Init()
+        {
+            initDic = new Dictionary<string, byte>();
+            initSizeArray = new Dictionary<string, int>();
+
+            Dictionary<string, string> tempDic = initValue();
+            initSizeArray = initSize();
+
+            foreach (string item in tempDic.Keys)
+            {
+                initDic[item] = tempDic[item].ToString().Select(x => Convert.ToByte(x)).ToArray()[0];
+            }
+        }
+
+        public bool GetBits(int[] addrs, int[] lengths, int device, ref byte[] buff, int requestCount, int read_maxSize, int readSize)
+        {
+            lock (this)
+            {
+                byte[] commandBuff;
+                byte[] writeBuff = new byte[22];
+
+                //readMaxSize 를 여기서 받아오고 
+                MemoryManager.MemoryMap map = MemoryManager.CreateMemoryMap(addrs, lengths, read_maxSize);
+
+                int totalLength = 0;
+
+                foreach (int l in map.lengths)
+                {
+                    totalLength += l;
+                }
+
+                byte[] readData = new byte[totalLength];
+
+                int index = 0;
+
+                for (int i = 0; i < map.addrs.Count; i++)
+                {
+                    int length = ((map.lengths[i] + map.addrs[i] % 16) / 16) + ((map.lengths[i] + map.addrs[i] % 16) % 16 > 0 ? 1 : 0); // Address Length
+                    int addr = map.addrs[i] / 16;
+                    int offset = map.addrs[i] % 16;
+
+                    commandBuff = MakePacket((int)DataCommand.Read, device, (ushort)length, (ushort)(addr * 2), (ushort)offset, false, writeBuff);
+
+                    byte[] readBuff = null;
+
+                    for (int reqCnt = 0; reqCnt < requestCount; reqCnt++)
+                    {
+                        bool writeResult = Write(ref commandBuff);
+
+                        readBuff = new byte[readSize];
+
+                        bool readResult = Read(ref readBuff, readSize);
+
+                        if (!readResult)
+                        {
+                            IronUtilites.LogManager.Manager.WriteLog("Error", "Read Failed, Please Check Connected Sockets");
+
+                            if (reqCnt == requestCount - 1)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    byte[] tempData = ExportData(readBuff, true);
+                    Buffer.BlockCopy(tempData, offset, readData, index, map.lengths[i]);
+                    index += map.lengths[i];
+                }
+
+                index = 0;
+
+                for (int k = 0; k < addrs.Length; k++)
+                {
+                    int buffIndex = 0;
+
+                    for (int j = 0; j < map.addrs.Count; j++)
+                    {
+                        if (addrs[k] >= map.addrs[j] && addrs[k] <= map.addrs[j] + map.lengths[j])
+                        {
+                            Buffer.BlockCopy(readData, (buffIndex + addrs[k] - map.addrs[j]), buff, index, lengths[k]);
+                            index += lengths[k];
+                            break;
+                        }
+
+                        buffIndex += map.lengths[j];
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public bool GetRegisters(int[] addrs, int[] lengths, int device, ref byte[] buff, int requestCount, int read_maxSize, int readSize)
+        {
+            lock (this)
+            {
+                byte[] commandBuff;
+                byte[] writeBuff = new byte[22];
+
+                MemoryManager.MemoryMap map = MemoryManager.CreateMemoryMap(addrs, lengths, read_maxSize);
+
+                int totalLength = 0;
+
+                foreach (int l in map.lengths)
+                {
+                    totalLength += l;
+                }
+
+                byte[] readData = new byte[totalLength * 2];
+                byte[] readBuff = null;
+                int index = 0;
+
+                for (int i = 0; i < map.addrs.Count; i++)
+                {
+                    commandBuff = MakePacket((int)DataCommand.Read, device, (ushort)map.lengths[i], (ushort)(map.addrs[i] * 2), 0, false, writeBuff);
+
+                    for (int reqCnt = 0; reqCnt < requestCount; reqCnt++)
+                    {
+                        bool writeResult = Write(ref commandBuff);
+
+                        readBuff = new byte[100];
+
+                        bool readResult = Read(ref readBuff, 100);
+
+                        if (!readResult)
+                        {
+                            IronUtilites.LogManager.Manager.WriteLog("Error", "Read Failed, Please Check Connected Sockets");
+
+                            if (reqCnt == requestCount - 1)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        break;
+                    }
+
+                    // 확인필요
+                    byte[] tempData = ExportData(readBuff, true);                          
+                    Buffer.BlockCopy(tempData, 32, readData, index, map.lengths[i] * 2);
+                    index += map.lengths[i] * 2;
+                }
+
+                index = 0;
+
+                for (int k = 0; k < addrs.Length; k++)
+                {
+                    int buffIndex = 0;
+
+                    for (int j = 0; j < map.addrs.Count; j++)
+                    {
+                        if (addrs[k] >= map.addrs[j] && addrs[k] <= map.addrs[j] + map.lengths[j])
+                        {
+                            Buffer.BlockCopy(readData, (buffIndex + addrs[k] - map.addrs[j]) * 2, buff, index, lengths[k] * 2);
+                            index += lengths[k] * 2;
+                            break;
+                        }
+
+                        buffIndex += map.lengths[j];
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public bool SetBit(int addr, int length, ref byte[] writebuff, int device, int requestCount, int write_maxSize, int readSize)
+        {
+            lock (this)
+            {
+                int[] addrs = { addr };
+                int[] lengths = { length };
+
+                MemoryManager.MemoryMap map = MemoryManager.CreateMemoryMap(addrs, lengths, write_maxSize);
+
+                int byteLength = length / 8 + (length % 8 > 0 ? 1 : 0);
+                byte[] commandBuff;
+                byte[] writeBuff = new byte[byteLength];
+
+                for (int i = 0; i < map.lengths.Count; i++)
+                {
+                    int offset = map.addrs[i] % 16;
+                    byte[] writeData = new byte[map.lengths[i]];
+                    for (int j = 0; j < map.lengths[i]; j++)
+                    {
+                        writeData[j] = writebuff[j * 2];
+                    }
+
+                    commandBuff = MakePacket((int)DataCommand.Write, device, (ushort)map.lengths[i], (ushort)(map.addrs[i] / 16), (ushort)offset, true, writeBuff);
+
+                    for (int reqCnt = 0; reqCnt < requestCount; reqCnt++)
+                    {
+                        bool writeResult = Write(ref commandBuff);
+
+                        byte[] temp = new byte[readSize];
+                        bool readResult = Read(ref temp, temp.Length);
+                        /*
+                        if (!readResult)
+                        {
+                            IronUtilites.LogManager.Manager.WriteLog("Error", "Read Failed, Please Check Connected Sockets");
+
+                            if (reqCnt == requestCount - 1)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }*/
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public bool SetRegister(int addr, int length, ref byte[] writebuff, int device, int requestCount, int write_maxSize, int readSize)
+        {
+            lock (this)
+            {
+                int[] addrs = { addr };
+                int[] lengths = { length };
+
+                MemoryManager.MemoryMap map = MemoryManager.CreateMemoryMap(addrs, lengths, write_maxSize);
+
+                int index = 0;
+
+                for (int i = 0; i < map.addrs.Count; i++)
+                {
+                    byte[] writeTempBuff = new byte[lengths[index] * 2];
+                    byte[] commandBuff;
+
+                    Buffer.BlockCopy(writebuff, index, writeTempBuff, 0, lengths[index] * 2);
+
+                    commandBuff = MakePacket((int)DataCommand.Write, device, (ushort)lengths[index], (ushort)(addrs[index] * 2), 0, true, writebuff);
+
+                    for (int reqCnt = 0; reqCnt < requestCount; reqCnt++)
+                    {
+                        bool writeResult = Write(ref commandBuff);
+
+                        byte[] temp = new byte[readSize];
+                        bool readResult = Read(ref temp, temp.Length);
+
+                        if (!readResult)
+                        {
+                            IronUtilites.LogManager.Manager.WriteLog("Error", "Read Failed, Please Check Connected Sockets");
+
+                            if (reqCnt == requestCount - 1)
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    index += map.lengths[i] * 2;
+                }
+
+                return true;
+            }
+        }
+
+        public byte[] MakePacket(int byCMD, int device, ushort dwRegNum, ushort dwStartAddr, ushort offset, bool write, byte[] writeBuff)
+        {
+            string packet = makePacketResult(byCMD, device, dwRegNum, dwStartAddr, offset, write, writeBuff);
+
+            return packet.Select(x => Convert.ToByte(x)).ToArray();
+        }
+
+        public byte[] ExportData(byte[] packetByte, bool isBit)
+        {
+            string result = "";
+
+            if (isBit)
+                result = exportDataResult(packetByte, true);
+            else
+                result = exportDataResult(packetByte, false);
+
+            return result.Select(x => Convert.ToByte(x)).ToArray();
+        }
+    }
+}

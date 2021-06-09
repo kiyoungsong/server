@@ -1,0 +1,12 @@
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\bin\Debug\netstandard2.0\DriverBase.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\bin\Debug\netstandard2.0\DriverBase.dll
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\bin\Debug\netstandard2.0\DriverBase.pdb
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\bin\Debug\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\bin\Debug\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.dll
+C:\Users\Song\Desktop\IronServer\Driver\DriverBase\obj\Debug\netstandard2.0\DriverBase.pdb

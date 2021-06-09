@@ -1,0 +1,31 @@
+﻿<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    @if (Data.SettingInfo.CurrentPage == "" || Data.SettingInfo.CurrentPage == "Index")
+    {
+        <h1 class="h3 mb-0 text-gray-800">Home</h1>
+    }
+    else
+    {
+        @if ((Data.SettingInfo.CurrentPage).Contains('.'))
+        {
+            string[] tempStr = Data.SettingInfo.CurrentPage.Split('.');
+
+            <h1 class="h3 mb-0 text-gray-800">@(tempStr[0]+"."+tempStr[1])</h1>
+        }
+        else
+        {
+            <h1 class="h3 mb-0 text-gray-800">@Data.SettingInfo.CurrentPage</h1>
+        }
+    }
+
+    <AntDesign.Space>
+        <SpaceItem>
+            <Button Type="primary" @onclick="@Connect" Disabled="@IsConnected">Connect</Button>
+        </SpaceItem>
+        <SpaceItem>
+            <Button Type="primary" @onclick="@Disconnect" Disabled="@(!IsConnected)">Disconnect</Button>
+        </SpaceItem>
+        <SpaceItem>
+            <Button Type="primary" @onclick="@OpenDialog">EditSetting</Button>
+        </SpaceItem>
+    </AntDesign.Space>
+</div>

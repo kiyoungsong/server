@@ -1,0 +1,8 @@
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\bin\Debug\netstandard2.0\EasyModbusTCPCore.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\bin\Debug\netstandard2.0\EasyModbusTCPCore.dll
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\bin\Debug\netstandard2.0\EasyModbusTCPCore.pdb
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\obj\Debug\netstandard2.0\EasyModbusTCPCore.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\obj\Debug\netstandard2.0\EasyModbusTCPCore.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\obj\Debug\netstandard2.0\EasyModbusTCPCore.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\obj\Debug\netstandard2.0\EasyModbusTCPCore.dll
+C:\Users\Song\Desktop\IronServer\Driver\EasyModbusTCPCore\obj\Debug\netstandard2.0\EasyModbusTCPCore.pdb

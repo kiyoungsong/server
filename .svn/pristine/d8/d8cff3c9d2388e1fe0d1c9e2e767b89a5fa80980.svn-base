@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IronPython" Version="2.7.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Interface\DriverInterface\DriverInterface.csproj" />
+    <ProjectReference Include="..\..\Interface\IronUtilites\IronUtilites.csproj" />
+    <ProjectReference Include="..\DriverBase\DriverBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\Melsec.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Melsec.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT EXIST &quot;..\..\..\bin&quot; MD &quot;..\..\..\bin&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version1)&quot; MD &quot;..\..\..\bin\$(Version1)&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version2)&quot; MD &quot;..\..\..\bin\$(Version2)&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version1)\driver&quot; MD &quot;..\..\..\bin\$(Version1)\driver&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version2)\driver&quot; MD &quot;..\..\..\bin\$(Version2)\driver&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(TargetDir)*&quot; &quot;..\..\..\bin\$(Version1)\driver&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(TargetDir)*&quot; &quot;..\..\..\bin\$(Version2)\driver&quot;" />
+  </Target>
+
+</Project>

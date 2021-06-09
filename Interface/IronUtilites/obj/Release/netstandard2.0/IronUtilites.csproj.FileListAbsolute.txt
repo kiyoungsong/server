@@ -1,0 +1,9 @@
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\bin\Release\netstandard2.0\IronUtilites.deps.json
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\bin\Release\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\bin\Release\netstandard2.0\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\obj\Release\netstandard2.0\IronUtilites.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\obj\Release\netstandard2.0\IronUtilites.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\obj\Release\netstandard2.0\IronUtilites.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\obj\Release\netstandard2.0\IronUtilites.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\obj\Release\netstandard2.0\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Interface\IronUtilites\obj\Release\netstandard2.0\IronUtilites.pdb

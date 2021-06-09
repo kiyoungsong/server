@@ -1,0 +1,33 @@
+﻿<Divider Style="margin:1px; padding:1px;"/>
+
+<Space Id="color">
+    <SpaceItem>
+        <Button Type="primary" Icon="clear">Clear</Button>
+    </SpaceItem>
+    <SpaceItem>
+        <Button Type="primary" Icon="download">Save</Button>
+    </SpaceItem>
+</Space>
+
+<div style="overflow:auto; height:300px;">
+    <Table DataSource="@logDataList" Bordered=@true Size=@TableSize.Middle HidePagination="@true" PageSize="20">
+        <Column Width=250 @bind-Field="@context.Timestamp"></Column>
+        <Column Width=100 @bind-Field="@context.Source"></Column>
+        <Column Width=100 @bind-Field="@context.Server"></Column>
+        <Column @bind-Field="@context.Message"></Column>
+    </Table>
+</div>
+
+<style>
+    #color{
+        position:
+    }
+</style>
+
+
+
+@code{
+    string size = "default";
+    private string position = TabPosition.Top;
+
+}

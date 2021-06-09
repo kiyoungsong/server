@@ -1,0 +1,58 @@
+﻿<div class="d-sm-flex align-items-center justify-content-between" style="background-color: #1890ff; height:4.5%;">
+    <AntDesign.Space>
+        <SpaceItem>
+            <Button Type="button" OnClick="ToggleCollapsed" Style="background-color: transparent; border:hidden; margin-bottom:4px;">
+                @if (collapsed)
+                {
+                    <Icon Type="arrow-right" Theme="outline" Height="25" Width="25" Style="color:white" />
+                }
+                else
+                {
+                    <Icon Type="menu" Theme="outline" Height="25" Width="25" Style="color:white" />
+                }
+            </Button>
+        </SpaceItem>
+        <SpaceItem>
+            <MatAppBarTitle Style="color:white">
+                IronAutomation Inc.
+            </MatAppBarTitle>
+        </SpaceItem>
+    </AntDesign.Space>
+    <AntDesign.Space Size="20" Style="margin-right:5px;">
+        <SpaceItem>
+            <a class="title" href="http://www.ironauto.co.kr/" target="_blank">
+                <Icon Type="home" Theme="fill" Height="30" Width="30" Style="color:white" />
+            </a>
+        </SpaceItem>
+        <SpaceItem>
+            <a class="title" href="http://www.ironauto.co.kr/suppot/download/faq/" target="_blank">
+                <Icon Type="question-circle" Theme="outline" Height="30" Width="30" Style="color:white" />
+            </a>
+        </SpaceItem>
+    </AntDesign.Space>
+</div>
+
+<style>
+    .title:link{color:white; text-decoration:none;}
+    .title:visited{color:white; text-decoration:none;}
+    .title:hover{color:white; text-decoration:none;}
+</style>
+
+
+
+
+
+
+@code{
+    [Parameter]
+    public EventCallback<bool> CollapsedChanged { get; set; }
+
+    bool collapsed;
+
+    protected void ToggleCollapsed()
+    {
+        collapsed = !collapsed;
+        CollapsedChanged.InvokeAsync(collapsed);
+    }
+
+}

@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Net;
+
+namespace IronWeb.Data
+{
+    public static class SettingInfo
+    {
+        public static string ServerAddr { get; set; } = "127.0.0.1";
+        public static string ClientAddr { get; set; } = Dns.GetHostEntry(Dns.GetHostName()).AddressList.LastOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork).ToString();
+        public static int Port { get; set; } = 62541;
+        public static bool IsConnect { get; set; } = false;
+        public static string SelectedDriverName { get; set; }
+        
+    }
+}

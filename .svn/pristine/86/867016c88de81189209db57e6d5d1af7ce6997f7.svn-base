@@ -1,0 +1,29 @@
+﻿using System;
+
+namespace Mistubishi_Melsec
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Melsec m = new Melsec();
+
+            m.SetDriverInfo(false, 0, "Melsec.xml");
+
+            string[] strName = null;
+            string[] strType = null;
+            bool[] bRedis = null;
+            int[] iSize = null;
+            string[] strMemory = null;
+
+            m.GetTagInfo(ref strName, ref strType, ref bRedis, ref iSize, ref strMemory);
+            m.Connect();
+
+            byte[] list = new byte[10];
+            object result = list;
+
+            m.ReadTag("Test", ref result);
+            //m.WriteTag("Test", result);
+        }
+    }
+}

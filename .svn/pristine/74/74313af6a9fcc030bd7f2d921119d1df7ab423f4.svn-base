@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462</TargetFrameworks>
+    <Version1>net462</Version1>	  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Interface\DriverInterface\DriverInterface.csproj" />
+    <ProjectReference Include="..\..\Interface\IronUtilites\IronUtilites.csproj" />
+    <ProjectReference Include="..\DriverBase\DriverBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NationalInstruments.Common">
+      <HintPath>C:\Program Files (x86)\National Instruments\Measurement Studio\DotNET\v4.0\AnyCPU\NationalInstruments.Common 19.1.40\NationalInstruments.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="NationalInstruments.Tdms">
+      <HintPath>C:\Program Files (x86)\National Instruments\Measurement Studio\DotNET\v4.0\AnyCPU\NationalInstruments.Tdms 19.0.40\NationalInstruments.Tdms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(SignAssembly)' == 'true'">
+	<DefineConstants>$(DefineConstants);SIGNASSEMBLY</DefineConstants>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT EXIST &quot;..\..\..\bin&quot; MD &quot;..\..\..\bin&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\driver&quot; MD &quot;..\..\..\bin\driver&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(TargetDir)*&quot; &quot;..\..\..\bin\$(Version1)\driver&quot;" />
+  </Target>
+</Project>

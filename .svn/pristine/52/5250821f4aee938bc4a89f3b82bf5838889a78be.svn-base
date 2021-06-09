@@ -1,0 +1,318 @@
+﻿using IronWeb.Data;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+
+namespace IronWeb.Pages
+{
+    public partial class Index
+    {
+        #region var
+        private string pagePath;
+        [CascadingParameter]
+        public string PagePath
+        {
+            get => pagePath;
+            set
+            {
+                this.pagePath = value;
+
+                if (value != "")
+                {
+                    IsTrend = false;
+                    Thread.Sleep(100);
+                    Init();
+                }
+            }
+        }
+
+        [Parameter]
+        public TableTag tableTag { get; set; }
+        [Parameter]
+        public Dictionary<string, TableTag> tableTags { get; set; }
+        [Parameter]
+        public List<TableTag> tableTagList { get; set; }
+
+        #region Setting 
+        public string xmlName = "";
+        public string channelName = "";
+        public string driverName = "";
+
+        bool dialogIsOpen = false;
+        string tempServerAddr { get; set; }
+        string tempPortNum { get; set; }
+        string tempClientAddr { get; set; }
+        public int Intervaltime { get; set; } = 3;
+        #endregion
+
+        bool IsTrend { get; set; } = false;
+
+        public List<TableTag> trendList = new List<TableTag>();
+        public Dictionary<string, TableTag> tagTrendDic;
+        string forwardForm = "[";
+        string backwardForm = "]";
+        string preData = string.Empty;
+        int i = 0;
+        Task trendTask;
+
+        bool isRunning = false;
+
+        IronClient.IronOPCUAClient ironClient;
+        #endregion
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            isRunning = false;
+            isRunning = true;
+
+            // 읽고 업데이트하는 쓰레드는 계속 돌리고 if문 플래그로 진입못하게 처리
+            // 페이지 클릭하면 데이터가 안나옴 ;; 해결필요
+            Task.Run(() => UpdateTrend());
+        }
+
+        protected void SetClient(IronClient.IronOPCUAClient ironOPCUAClient)
+        {
+            this.ironClient = ironOPCUAClient;
+        }
+
+        protected void Init()
+        {
+            if (trendTask != null)
+            {
+                trendTask.Wait();
+                trendTask.Dispose();
+            }
+
+            trendList = new List<TableTag>();
+            tableTagList = new List<TableTag>();
+            tableTags = new Dictionary<string, TableTag>();
+            tagTrendDic = new Dictionary<string, TableTag>();
+
+            tableTags = LoadTags();
+            
+            if (tableTags != null)
+            {
+                IsTrend = true;
+                
+                UnSubscribe();
+                SetSubscribe();
+            }
+            else
+            {
+                // 시스템 로그
+            }
+        }
+
+        protected void SetSubscribe()
+        {
+            if (ironClient != null && ironClient.IsConnected)
+            {
+                //List<string> tt = ironClient.GetAllVariableTagList(null, null, 1).ToList();
+                string[] tempTags = new string[tableTags.Count];
+
+                ironClient.Subscribe();
+                ironClient.ArrayChangeEvent += DataChanged;
+
+                var tagNameList = from tag in tableTags.Keys
+                                    select tag;
+
+                ironClient.Subscribe(tagNameList.ToArray());
+                
+            }
+        }
+
+        protected void UnSubscribe()
+        {
+            if(ironClient != null && ironClient.IsConnected)
+            {
+                ironClient.Unsubscribe();
+                ironClient.ArrayChangeEvent -= DataChanged;
+            }
+        }
+
+        protected void DataChanged(string[] tags, object[] value, string[] dataTypes, DateTime[] timeStemp)
+        {
+            if(tags != null)
+            {
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    string tempValue = "";
+
+                    if(value[i] is Array array)
+                    {
+                        int idx = 0;
+                        int lastIdx = array.Length - 1;
+
+                        foreach(var arr in array)
+                        {
+                            if(idx == lastIdx)
+                            {
+                                tempValue += arr.ToString();
+                            }
+                            else
+                            {
+                                tempValue += arr.ToString() + ", ";
+                            }
+                            
+                            idx++;
+                        }
+                    }
+                    else
+                    {
+                        tempValue = value[i].ToString();
+                    }
+
+                    tableTags[tags[i]].Value = tempValue;
+                    tableTags[tags[i]].SourceTime = timeStemp[i].ToString("hh:mm:ss.fff");
+                }
+            }
+        }
+
+
+        #region Show Data
+        protected Dictionary<string, TableTag> LoadTags()
+        {
+            string[] temp = SettingInfo.SelectedDriverName.Split('.');
+            channelName = temp[0];
+            driverName = temp[1];
+            xmlName = temp[2] + "." + temp[3];
+
+            foreach (var channel in XMLInfo.ChannelList.Values)
+            {
+                if (channel.Name == channelName)
+                {
+                    foreach (var driver in channel.DriverList.Values)
+                    {
+                        if (driver.Name == driverName)
+                        {
+                            var trend = from list in driver.TableTags.Values
+                                        where list.IsTrend == true
+                                        select list;
+
+                            trendList = trend.ToList();
+
+                            foreach (var a in trendList)
+                            {
+                                tagTrendDic[a.id] = a;
+                            }
+
+                            tableTagList = driver.TableTagList;
+
+                            return driver.TableTags;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        protected async void UpdateTrend()
+        {
+            while (isRunning)
+            {
+                if (ironClient != null)
+                {
+                    if (IsTrend)
+                    {
+                        Trace.WriteLine("Thread : " + Thread.CurrentThread.ManagedThreadId);
+
+                        if (tagTrendDic.Count > 0)
+                        {
+                            if (i == 30)
+                            {
+                                // 데이터 초기화 부분 체크
+                                preData = "";
+                            }
+
+                            string strData = preData;
+                            string currentTime = DateTime.Now.ToString("HH:mm:ss.fff");
+
+                            strData += @"{""time"":" + $@"""{currentTime}"",";
+
+                            for (int i = 0; i < trendList.Count; i++)
+                            {
+                                strData += @$"""{trendList[i].id}"":{trendList[i].Value}";
+
+                                if (i != trendList.Count - 1)
+                                {
+                                    strData += ",";
+                                }
+                            }
+
+                            strData += "}";
+
+                            // 여기서 런타임으로 호출
+                            await jsrumtime.InvokeVoidAsync("GenerateLineChart", forwardForm + strData + backwardForm);
+
+                            preData = strData + ",";
+                            i++;
+                        }
+                        else
+                        {
+                            i = 0;
+                        }
+
+                        Thread.Sleep(Intervaltime * 1000);
+                    }
+                }
+            }
+        }
+
+        protected void OnOffTrend(TableTag tableTag)
+        {
+            string strTrend = channelName + "." + driverName + "." + tableTag.id;
+
+            if (tableTag.IsTrend)
+            {
+                tableTag.FullName = strTrend;
+
+                if (trendList.Count < 10)
+                {
+                    trendList.Add(tableTag);
+                    tagTrendDic[tableTag.FullName] = tableTag;
+                }
+                else
+                {
+                    tableTag.IsTrend = !tableTag.IsTrend;
+                }
+            }
+            else
+            {
+                if (trendList.Count > 0 && trendList.Contains(tableTag))
+                {
+                    trendList.Remove(tableTag);
+                }
+            }
+
+        }
+        #endregion
+
+        #region Dialog
+        void ShowEditDialog(List<string> list)
+        {
+            dialogIsOpen = Convert.ToBoolean(list[0]);
+            tempServerAddr = list[1];
+            tempPortNum = list[2];
+            tempClientAddr = list[3];
+        }
+
+        void OkClick()
+        {
+            Data.SettingInfo.ServerAddr = tempServerAddr;
+            Data.SettingInfo.Port = Convert.ToInt32(tempPortNum);
+            Data.SettingInfo.ClientAddr = tempClientAddr;
+            dialogIsOpen = false;
+        }
+        #endregion
+    }
+}

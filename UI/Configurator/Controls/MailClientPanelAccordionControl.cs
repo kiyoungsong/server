@@ -1,0 +1,25 @@
+using System;
+using System.Drawing;
+using DevExpress.Skins;
+using DevExpress.Utils.Drawing;
+using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Drawing;
+using DevExpress.XtraEditors.ViewInfo;
+
+namespace Configurator.Controls {
+    public class MailClientPanelAccordionControl : AccordionControl {
+        protected override BaseControlPainter CreatePainter() { return new MailClientAccordionControlPainter(); }
+        protected override BaseStyleControlViewInfo CreateViewInfo() { return new MailClientAccordionControlViewInfo(this); }
+        public int ContentTopIndent { get; set; }
+    }
+    public class MailClientAccordionControlViewInfo : AccordionControlViewInfo {
+        public MailClientAccordionControlViewInfo(AccordionControl owner) : base(owner) {
+        }
+    }
+    class MailClientAccordionControlPainter : AccordionControlPainter {
+        protected override bool DrawElementDCompBackground(GraphicsCache cache, AccordionElementBaseViewInfo elementInfo) {
+            return elementInfo.Element.Style == ElementStyle.Group;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\Melsecneth.deps.json
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\Melsecneth.dll
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\Melsecneth.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\DriverInterface.dll
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\IronUtilites.dll
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\DriverInterface.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\bin\Debug\netcoreapp3.1\IronUtilites.pdb
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.csprojAssemblyReference.cache
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.AssemblyInfoInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.AssemblyInfo.cs
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.csproj.CoreCompileInputs.cache
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.csproj.CopyComplete
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.dll
+C:\Users\Song\Desktop\IronServer\Driver\Melsecneth\obj\Debug\netcoreapp3.1\Melsecneth.pdb

@@ -1,0 +1,47 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Melsecneth/1.0.0": {
+        "dependencies": {
+          "DriverInterface": "1.0.0",
+          "IronUtilites": "1.0.0"
+        },
+        "runtime": {
+          "Melsecneth.dll": {}
+        }
+      },
+      "DriverInterface/1.0.0": {
+        "runtime": {
+          "DriverInterface.dll": {}
+        }
+      },
+      "IronUtilites/1.0.0": {
+        "runtime": {
+          "IronUtilites.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Melsecneth/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DriverInterface/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IronUtilites/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

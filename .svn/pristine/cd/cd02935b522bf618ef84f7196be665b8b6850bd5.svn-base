@@ -1,0 +1,467 @@
+﻿using IronWeb.Data;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using ChartJs.Blazor.ChartJS.Common;
+using ChartJs.Blazor.ChartJS.Common.Axes;
+using ChartJs.Blazor.ChartJS.Common.Axes.Ticks;
+using ChartJs.Blazor.ChartJS.Common.Properties;
+using ChartJs.Blazor.ChartJS.Common.Enums;
+using ChartJs.Blazor.ChartJS.LineChart;
+using ChartJs.Blazor.Util;
+using ChartJs.Blazor.Charts;
+using ChartJs.Blazor.ChartJS.Common.Time;
+using ChartJs.Blazor.ChartJS.Common.Handlers;
+
+namespace IronWeb.Pages
+{
+    public partial class Index
+    {
+        #region var
+        private string pagePath = "Home";
+
+        [CascadingParameter]
+        public string PagePath
+        {
+            get => pagePath;
+            set
+            {
+                this.pagePath = value;
+                Data.SettingInfo.CurrentPage = this.pagePath;
+
+                if(value == "Index" || value == "Home" || value == "EditLoginDisplay")
+                {
+                    
+                }
+                else if (value != "" )
+                {
+                    isData = true;
+                    isTrend = false;
+                    Init();
+                }
+            }
+        }
+
+        [Parameter]
+        public TableTag tableTag { get; set; }
+
+        [Parameter]
+        public Dictionary<string, TableTag> tableTags { get; set; }
+
+        [Parameter]
+        public List<TableTag> tableTagList { get; set; }
+
+        bool isData = true;
+        bool isTrend = false;
+        bool isRead = false;
+        
+
+        #region Setting 
+        public string xmlName = "";
+        public string channelName = "";
+        public string driverName = "";
+        bool dialogIsOpen = false;
+
+        string tempServerAddr { get; set; }
+        string tempPortNum { get; set; }
+        string tempClientAddr { get; set; }
+        public int Intervaltime { get; set; } = 3;
+        #endregion
+
+
+        #region Trend
+        public List<TableTag> trendList;
+        public Dictionary<string, TableTag> tagTrendDic;
+        LineConfig lineConfig;
+        ChartJsLineChart lineChartJs;
+        private LineDataset<TimeTuple<double>> tagTrendSet; //Tag
+        private List<LineDataset<TimeTuple<double>>> list = null; // TagList
+        int dataMaxCnt = 50;
+        #endregion
+
+        IronClient.IronOPCUAClient ironClient;
+        #endregion
+
+        #region Init
+
+        protected void Init()
+        {
+            trendList = new List<TableTag>();
+            tableTagList = new List<TableTag>();
+            tableTags = new Dictionary<string, TableTag>();
+            tagTrendDic = new Dictionary<string, TableTag>();
+
+            tableTags = LoadTags();
+            InitChart();
+
+            if (tableTags != null)
+            {
+                UnSubscribe();
+                SetSubscribe();
+            }
+            else
+            {
+                Data.LogManager.WriteLog($"Failed Load Any Tags, Please Check XML", false);
+            }
+        }
+
+        protected void SetClient(IronClient.IronOPCUAClient ironOPCUAClient)
+        {
+            this.ironClient = ironOPCUAClient;
+
+            if(this.pagePath == Data.SettingInfo.CurrentPage)
+            {
+                if (tableTags != null && ironOPCUAClient != null)
+                {
+                    UnSubscribe();
+                    SetSubscribe();
+                }
+            }
+        }
+
+        protected void SetSubscribe()
+        {
+            if (ironClient != null && ironClient.IsConnected)
+            {
+                string[] tempTags = new string[tableTags.Count];
+
+                var tagNameList = from tag in tableTags.Keys
+                                  select tag;
+                ironClient.ArrayChangeEvent += DataChanged;
+
+                ironClient.Subscribe();
+                ironClient.Subscribe(tagNameList.ToArray());
+            }
+        }
+
+        protected void UnSubscribe()
+        {
+            if (ironClient != null && ironClient.IsConnected)
+            {
+                ironClient.Unsubscribe();
+                ironClient.ArrayChangeEvent -= DataChanged;
+            }
+        }
+        #endregion
+
+
+        #region Table
+        protected Dictionary<string, TableTag> LoadTags()
+        {
+            string[] temp = SettingInfo.SelectedDriverName.Split('.');
+            channelName = temp[0];
+            driverName = temp[1];
+            xmlName = temp[2] + "." + temp[3];
+
+            foreach (var channel in XMLInfo.ChannelList.Values)
+            {
+                if (channel.Name == channelName)
+                {
+                    foreach (var driver in channel.DriverList.Values)
+                    {
+                        if (driver.Name == driverName)
+                        {
+                            var trend = from list in driver.TableTags.Values
+                                        where list.IsTrend == true
+                                        select list;
+
+                            trendList = trend.ToList();
+
+                            foreach (var a in trendList)
+                            {
+                                tagTrendDic[a.id] = a;
+                            }
+
+                            tableTagList = driver.TableTagList;
+
+                            return driver.TableTags;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        protected void OnOffTrend(TableTag tableTag)
+        {
+            string strTrend = channelName + "." + driverName + "." + tableTag.id;
+
+            if (tableTag.IsTrend)
+            {
+                tableTag.FullName = strTrend;
+
+                if (trendList.Count < 10)
+                {
+                    trendList.Add(tableTag);
+                    tagTrendDic[tableTag.FullName] = tableTag;
+                }
+                else
+                {
+                    tableTag.IsTrend = !tableTag.IsTrend;
+                }
+            }
+            else
+            {
+                if (trendList.Count > 0 && trendList.Contains(tableTag))
+                {
+                    trendList.Remove(tableTag);
+
+                    if (tagTrendDic.ContainsKey(tableTag.FullName))
+                    {
+                        tagTrendDic.Remove(tableTag.FullName);
+                    }
+                }
+            }
+        }
+
+        protected void DataChanged(string[] tags, object[] value, string[] dataTypes, DateTime[] timeStemp, DateTime[] serverTime, string[] status)
+        {
+            if (tags != null)
+            {
+                for (int i = 0; i < tags.Length; i++)
+                {
+                    string tempValue = "";
+
+                    if (value[i] is Array array)
+                    {
+                        int idx = 0;
+                        int lastIdx = array.Length - 1;
+
+                        foreach (var arr in array)
+                        {
+                            if (idx == lastIdx)
+                            {
+                                tempValue += arr.ToString();
+                            }
+                            else
+                            {
+                                tempValue += arr.ToString() + ", ";
+                            }
+
+                            idx++;
+                        }
+                    }
+                    else
+                    {
+                        tempValue = value[i].ToString();
+
+                        if (trendList.Count > 0 && isTrend && isRead)
+                        {
+                            foreach (var trend in trendList)
+                            {
+                                if (trend.FullName == tags[i])
+                                {
+                                    UpdateTrend(tags[i], tempValue, timeStemp[i]);
+                                }
+                            }
+                        }
+                    }
+
+                    if (tableTags.ContainsKey(tags[i]))
+                    {
+                        tableTags[tags[i]].Value = tempValue;
+                        tableTags[tags[i]].SourceTime = timeStemp[i].ToString("hh:mm:ss.fff");
+                        tableTags[tags[i]].ServerTime = serverTime[i].ToString("hh:mm:ss.fff");
+                        tableTags[tags[i]].Status = status[i];
+                    }
+                }
+
+                InvokeAsync(StateHasChanged);
+            }
+        }
+        #endregion
+
+
+        #region Chart
+        protected void InitChart()
+        {
+            isRead = StartTrend();
+        }
+
+        protected bool StartTrend()
+        {
+            CreateChartFrame();
+
+            lineConfig.Data.Datasets.Clear();
+            list = new List<LineDataset<TimeTuple<double>>>();
+
+            if (tagTrendDic.Count > 0)
+            {
+                foreach (var tag in tagTrendDic.Values)
+                {
+                    string color = ColorUtil.RandomColorString();
+
+                    tagTrendSet = new LineDataset<TimeTuple<double>>
+                    {
+                        BackgroundColor = color,
+                        BorderColor = color,
+                        Label = tag.id,
+                        Fill = false,
+                        PointBackgroundColor = color,
+                        BorderWidth = 3,
+                        PointRadius = 4,
+                        PointBorderWidth = 2,
+                        SteppedLine = SteppedLine.False
+                    };
+
+                    tagTrendSet.Add(new TimeTuple<double>(new Moment(DateTime.Now), Random.NextDouble()));
+
+                    if(tagTrendSet.Data.Count > dataMaxCnt)
+                    {
+                        tagTrendSet.RemoveAt(0);
+                    }
+
+                    list.Add(tagTrendSet);
+                }
+
+                foreach (var lst in list)
+                {
+                    lineConfig.Data.Datasets.Add(lst);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        protected void CreateChartFrame()
+        {
+            lineConfig = new LineConfig
+            {
+                Options = new LineOptions
+                {
+                    Responsive = true,
+                    Title = new OptionsTitle
+                    {
+                        Display = false
+                    },
+                    Legend = new Legend
+                    {
+                        Position = Position.Top,
+                        Labels = new LegendLabelConfiguration
+                        {
+                            UsePointStyle = true
+                        }
+                    },
+                    Tooltips = new Tooltips
+                    {
+                        Mode = InteractionMode.Index,
+                        Intersect = false
+                    },
+                    Scales = new Scales
+                    {
+                        xAxes = new List<CartesianAxis>
+                        {
+                            new TimeAxis
+                            {
+                                Distribution = TimeDistribution.Series,
+                                Ticks = new TimeTicks
+                                {
+                                    Source = TickSource.Data
+                                },
+                                Time = new TimeOptions
+                                {
+                                    Unit = TimeMeasurement.Millisecond,
+                                    Round = TimeMeasurement.Millisecond,
+                                    TooltipFormat = "HH:mm:ss:SSS",
+                                    DisplayFormats = TimeDisplayFormats.DE_CH
+                                },
+                                ScaleLabel = new ScaleLabel
+                                {
+                                    LabelString = "Time"
+                                }
+                            }
+                        }
+                    },
+                    Hover = new LineOptionsHover
+                    {
+                        Intersect = true,
+                        Mode = InteractionMode.Y
+                    }
+                }
+            };
+        }
+
+        private async void UpdateTrend(string tagName, string value, DateTime dateTime)
+        {
+            foreach (var tag in list)
+            {
+                if (tag.Label == tagName.Split('.')[2])
+                {
+                    if (value.ToLower() == "true" || value.ToLower() == "false")
+                    {
+                        switch (value.ToLower())
+                        {
+                            case "true":
+                                tag.Add(new TimeTuple<double>(new Moment(dateTime), 1));
+                                break;
+                            case "fasle":
+                                tag.Add(new TimeTuple<double>(new Moment(dateTime), 0));
+                                break;
+                        }
+                    }
+                    else if (double.TryParse(value, out double result))
+                    {
+                        tag.Add(new TimeTuple<double>(new Moment(DateTime.Now), result));
+                    }
+
+                    if (tag.Data.Count > dataMaxCnt)
+                    {
+                        tag.RemoveAt(0);
+                    }
+                }
+            }
+
+            await lineChartJs.Update();
+        }
+
+        protected void TabClick()
+        {
+            isData = !isData;
+            isTrend = !isTrend;
+        }
+        #endregion
+
+
+        #region testcode
+        Random Random = new Random();
+
+        protected void AddItem()
+        {
+            foreach (var tag in list)
+            {
+                tag.Add(new TimeTuple<double>(new Moment(DateTime.Now), Random.NextDouble()));
+            }
+
+            lineChartJs.Update();
+        }
+        #endregion
+
+
+        #region Edit Dialog
+        void ShowEditDialog(List<string> list)
+        {
+            dialogIsOpen = Convert.ToBoolean(list[0]);
+            tempServerAddr = list[1];
+            tempPortNum = list[2];
+            tempClientAddr = list[3];
+        }
+
+        void OkClick()
+        {
+            Data.SettingInfo.ServerAddr = tempServerAddr;
+            Data.SettingInfo.Port = Convert.ToInt32(tempPortNum);
+            Data.SettingInfo.ClientAddr = tempClientAddr;
+            dialogIsOpen = false;
+        }
+        #endregion
+    }
+}

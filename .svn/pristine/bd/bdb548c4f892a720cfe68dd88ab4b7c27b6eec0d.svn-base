@@ -1,0 +1,49 @@
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.IO;
+using System.Globalization;
+using CsvHelper;
+
+namespace IronWeb.Shared
+{
+    public partial class FooterLayout
+    {
+        [Parameter]
+        public IronWeb.Data.LogManager LogManager { get; set; }
+
+        async void Add()
+        {
+            LogManager.WriteLog("testttttt", false);
+            await jsrumtime.InvokeVoidAsync("AutoScroll");
+        }
+
+        async void Clear()
+        {
+            LogManager.Clear();
+            await jsrumtime.InvokeVoidAsync("AutoScroll");
+        }
+
+        void Save()
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var writer = new StreamWriter(memoryStream))
+                {
+                    using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                    {
+                        csv.WriteRecords(LogManager.LogList);
+                    }
+
+                    var arr = memoryStream.ToArray();
+
+                    jsrumtime.InvokeAsync<object>("saveAsFile", $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}.csv", Convert.ToBase64String(arr));
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IronServer>
+	<xs:schema id="IronServer" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xs:element name="IronServer" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+			<xs:complexType>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="Channel">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ID" type="xs:int" minOccurs="0" />
+								<xs:element name="Name" type="xs:string" minOccurs="0" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Device">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ID" type="xs:int" minOccurs="0" />
+								<xs:element name="ChannelID" type="xs:int" minOccurs="0" />
+								<xs:element name="Name" type="xs:string" minOccurs="0" />
+								<xs:element name="Real" type="xs:string" minOccurs="0" />
+								<xs:element name="Thread" type="xs:string" minOccurs="0" />
+								<xs:element name="Log" type="xs:string" minOccurs="0" />
+								<xs:element name="HexNum" type="xs:string" minOccurs="0" />
+								<xs:element name="Swap" type="xs:string" minOccurs="0" />
+								<xs:element name="IOFile" type="xs:string" minOccurs="0" />
+								<xs:element name="DLL" type="xs:string" minOccurs="0" />
+								<xs:element name="ClassName" type="xs:string" minOccurs="0" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:complexType>
+		</xs:element>
+	</xs:schema>
+	<Channel>
+		<ID>0</ID>
+		<Name>Enet</Name>
+	</Channel>
+	<Device>
+		<ID>0</ID>
+		<ChannelID>0</ChannelID>
+		<Name>LS</Name>
+		<Real>1</Real>
+		<Thread>1</Thread>
+		<Log>1</Log>
+		<HexNum>1</HexNum>
+        <ScanMode>1</ScanMode>
+        <ScanRate>100</ScanRate>
+		<Swap>0</Swap>
+		<IOFile>Enet.xml</IOFile>
+		<DLL>LS_Enet</DLL>
+		<ClassName>Enet</ClassName>
+	</Device>
+	<!--
+	<Channel>
+		<ID>1</ID>
+		<Name>Yaskawa</Name>
+	</Channel>
+		<Device>
+		<ID>0</ID>
+		<ChannelID>1</ChannelID>
+		<Name>Yaskawa</Name>
+		<Real>1</Real>
+		<Thread>1</Thread>
+		<Log>1</Log>
+		<HexNum>1</HexNum>
+        <ScanMode>1</ScanMode>
+        <ScanRate>250</ScanRate>
+		<Swap>0</Swap>
+		<IOFile>Memobus.xml</IOFile>
+		<DLL>Yaskawa_Memobus</DLL>
+		<ClassName>Memobus</ClassName>
+	</Device>
+	<Channel>
+		<ID>0</ID>
+		<Name>Modbus</Name>
+	</Channel>
+		<Device>
+		<ID>0</ID>
+		<ChannelID>0</ChannelID>
+		<Name>Modbus</Name>
+		<Real>1</Real>
+		<Thread>1</Thread>
+		<Log>1</Log>
+		<HexNum>1</HexNum>
+		<ScanMode>1</ScanMode>
+        <ScanRate>250</ScanRate>
+		<Swap>0</Swap>
+		<IOFile>Modbus1.xml</IOFile>
+		<DLL>Modbus</DLL>
+		<ClassName>Modbus</ClassName>
+	</Device>
+	<Channel>
+		<ID>0</ID>
+		<Name>Melsecneth</Name>
+	</Channel>
+	<Device>
+		<ID>0</ID>
+		<ChannelID>0</ChannelID>
+		<Name>Melsecneth</Name>
+		<Real>1</Real>
+		<Thread>1</Thread>
+		<Log>1</Log>
+		<HexNum>1</HexNum>
+        <ScanMode>1</ScanMode>
+        <ScanRate>250</ScanRate>
+		<Swap>0</Swap>
+		<IOFile>Melsecneth.xml</IOFile>
+		<DLL>Melsecneth</DLL>
+		<ClassName>Melsecneth</ClassName>
+	</Device>
+
+	<Channel>
+		<ID>0</ID>
+		<Name>Fins</Name>
+	</Channel>
+		<Device>
+		<ID>0</ID>
+		<ChannelID>0</ChannelID>
+		<Name>Fins</Name>
+		<Real>1</Real>
+		<Thread>1</Thread>
+		<Log>1</Log>
+		<HexNum>1</HexNum>
+		<ScanMode>1</ScanMode>
+        <ScanRate>250</ScanRate>
+		<Swap>0</Swap>
+		<IOFile>FINS.xml</IOFile>
+		<DLL>Omron_FINS</DLL>
+		<ClassName>FINS</ClassName>
+	</Device>
+	-->
+</IronServer>

@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace IronWeb.Data
+{
+    public class DataXml
+    {
+        public Dictionary<int, Channel> ChannelList { get; set; }
+    }
+
+    public class Channel
+    {
+        public string Name { get; set; }
+        public Dictionary<int, Device> DeviceList { get; set; }
+    }
+
+    public class Device
+    {
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public string IOFileName { get; set; }
+        public List<Tag> TagList { get; set; }
+    }
+    
+}

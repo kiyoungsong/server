@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version1>net462</Version1>
+    <Version2>netcoreapp3.1</Version2>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT EXIST &quot;..\..\..\bin&quot; MD &quot;..\..\..\bin&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version1)&quot; MD &quot;..\..\..\bin\$(Version1)&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version2)&quot; MD &quot;..\..\..\bin\$(Version2)&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version1)\driver&quot; MD &quot;..\..\..\bin\$(Version1)\driver&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version2)\driver&quot; MD &quot;..\..\..\bin\$(Version2)\driver&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(TargetDir)*&quot; &quot;..\..\..\bin\$(Version1)\driver&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(TargetDir)*&quot; &quot;..\..\..\bin\$(Version2)\driver&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua" Version="1.4.363.107" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Interface\IronUtilites\IronUtilites.csproj" />
+  </ItemGroup>
+</Project>

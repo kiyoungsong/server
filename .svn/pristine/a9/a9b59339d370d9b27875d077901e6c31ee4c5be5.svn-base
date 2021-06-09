@@ -1,0 +1,111 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+namespace IronWeb.Data
+{
+    [XmlRoot(ElementName = "IronServer")]
+    public class XmlModel
+    {
+
+        [XmlElement("Device")]
+        public List<_tagDeviceInfo> TagDeviceInfo { get; set; }
+        [XmlElement("Channel")]
+        public List<_tagChannelInfo> TagChannelnfo { get; set; }
+    }
+    public struct _tagChannelInfo
+    {
+        [XmlElement("ID")]
+        public int IId { get; set; }
+        [XmlElement("Name")]
+        public string Name { get; set; }
+        public List<Driver> DriverList { get; set; }
+    }
+
+    public struct _tagDeviceInfo
+    {
+        [XmlElement("ID")]
+        public int IId { get; set; }
+        [XmlElement("ChannelID")]
+        public int IchannelID { get; set; }
+        [XmlElement("Name")]
+        public string DriverName { get; set; }
+        [XmlElement("Real")]
+        public bool BReal { get; set; }
+        [XmlElement("Thread")]
+        public bool BThread { get; set; }
+        [XmlElement("Log")]
+        public bool BLog { get; set; }
+        [XmlElement("HexNum")]
+        public uint UHexNum { get; set; }
+        [XmlElement("Swap")]
+        public bool BSwap { get; set; }
+        [XmlElement("ScanMode")]
+        public uint UScanMode { get; set; }
+        [XmlElement("ScanRate")]
+        public uint UScanRate { get; set; }
+
+        [XmlElement("IOFile")]
+        public string StrIOFile { get; set; }
+        [XmlElement("DLL")]
+        public string StrDriver { get; set; }
+        [XmlElement("ClassName")]
+        public string StrClassName { get; set; }
+    }
+
+
+    [XmlRoot(ElementName = "Driver")]
+    public class Driver
+    {
+
+        [XmlAttribute("id")]
+        public string id { get; set; }
+        [XmlAttribute("type")]
+        public string type { get; set; }
+        [XmlAttribute("ipaddr")]
+        public string ipaddr { get; set; }
+        [XmlAttribute("port")]
+        public string port { get; set; }
+        [XmlAttribute("scanmode")]
+        public string scanmode { get; set; }
+        [XmlAttribute("desc")]
+        public string desc { get; set; }
+        [XmlAttribute("connectTime")]
+        public string connectTime { get; set; }
+        [XmlAttribute("requestTime")]
+        public string requestTime { get; set; }
+        [XmlAttribute("requestCount")]
+        public string requestCount { get; set; }
+
+        [XmlElement("Tag")]
+        public List<Tag> Tag { get; set; }
+    }
+
+    public class Tag
+    {
+        [XmlAttribute("id")]
+        public string id { get; set; }
+        [XmlAttribute("memory")]
+        public string memory { get; set; }
+        [XmlAttribute("addr")]
+        public string addr { get; set; }
+        [XmlAttribute("scanrate")]
+        public string scanrate { get; set; }
+        [XmlAttribute("type")]
+        public string type { get; set; }
+        [XmlAttribute("redis")]
+        public string redis { get; set; }
+        [XmlAttribute("size")]
+        public string size { get; set; }
+
+        public string Value { get; set; } = "0";
+
+        public string ServerTime { get; set; } = DateTime.Now.ToString("hh:mm:ss:fffff");
+
+        public string SourceTime { get; set; } = DateTime.Now.ToString("hh:mm:ss:fffff");
+
+        public bool IsTrend { get; set; }
+    }
+}

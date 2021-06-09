@@ -1,0 +1,84 @@
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.IO;
+using System.Globalization;
+using CsvHelper;
+using System.Text;
+using System.Timers;
+using System.Threading.Tasks;
+
+namespace IronWeb.Shared
+{
+    public partial class FooterLayout
+    {
+        System.Timers.Timer timers;
+        int cnt = 0;
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            cnt = Data.LogManager.LogList.Count;
+
+            if (timers != null)
+            {
+                timers.Elapsed -= Changed;
+                timers.Stop();
+            }
+            timers = new System.Timers.Timer(1000) { AutoReset = true };
+            timers.Elapsed += Changed;
+            timers.Start();
+        }
+
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            if(cnt != Data.LogManager.LogList.Count)
+            {
+                jsrumtime.InvokeVoidAsync("AutoScroll");
+                cnt = Data.LogManager.LogList.Count;
+            }
+            
+            return base.OnAfterRenderAsync(firstRender);
+        }
+
+        void Changed(object sender, ElapsedEventArgs e)
+        {
+            InvokeAsync(StateHasChanged);
+        }
+
+        async void Add()
+        {
+            Data.LogManager.WriteLog("testttttt", false);
+            await jsrumtime.InvokeVoidAsync("AutoScroll");
+        }
+
+        async void Clear()
+        {
+            Data.LogManager.Clear();
+            await jsrumtime.InvokeVoidAsync("AutoScroll");
+        }
+
+        async void Save()
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var writer = new StreamWriter(memoryStream))
+                {
+                    using(var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                    {
+                        csv.WriteRecords(Data.LogManager.LogList);
+                    }
+
+                    var arr = memoryStream.ToArray();
+
+                    _ = await jsrumtime.InvokeAsync<object>("saveAsFile", $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")}.csv", Convert.ToBase64String(arr));
+                }
+            }
+        }
+    }
+}
+

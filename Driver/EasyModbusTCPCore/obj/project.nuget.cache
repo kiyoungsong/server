@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Vg/thjvKpFO7IU/s4A7R4HT6tL7MCFi6cFU6KUWo+hkaBD9ImT6oczlIup2gX1wex2/t9eTbnrDrV+NAOARk3A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Song\\Desktop\\IronServer\\Driver\\EasyModbusTCPCore\\EasyModbusTCPCore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Song\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\Song\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

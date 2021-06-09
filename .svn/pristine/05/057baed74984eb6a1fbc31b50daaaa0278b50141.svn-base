@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp3.1;net462</TargetFrameworks>
+    <Version1>net462</Version1>
+    <Version2>netcoreapp3.1</Version2>
+    <Configurations>Debug;Release;Remote</Configurations>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Remote|AnyCPU'">
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OPCFoundation.NetStandard.Opc.Ua" Version="1.4.363.107" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Interface\DriverInterface\DriverInterface.csproj" />
+    <ProjectReference Include="..\..\Interface\IronUtilites\IronUtilites.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="IronServer.Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT EXIST &quot;..\..\..\bin&quot; MD &quot;..\..\..\bin&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version1)&quot; MD &quot;..\..\..\bin\$(Version1)&quot;&#xD;&#xA;IF NOT EXIST &quot;..\..\..\bin\$(Version2)&quot; MD &quot;..\..\..\bin\$(Version2)&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(ProjectDir)\bin\$(ConfigurationName)\$(Version1)\*&quot; &quot;..\..\..\bin\$(Version1)&quot;&#xD;&#xA;XCOPY /Y /S &quot;$(ProjectDir)\bin\$(ConfigurationName)\$(Version2)\*&quot; &quot;..\..\..\bin\$(Version2)&quot;" />
+  </Target>
+
+</Project>

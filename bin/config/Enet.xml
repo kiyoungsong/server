@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="Enet" type="TCP" ipaddr="192.168.0.120" port="2004" scanmode="0" desc="" 
+		connectTime="1" requestTime="1" requestCount="3">
+	<Tag id="FB0" memory="F" addr="00" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="FB1" memory="F" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="FB2" memory="F" addr="20" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="NB0" memory="N" addr="01" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="PB0" memory="P" addr="12" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="MB0" memory="M" addr="03" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="KB0" memory="K" addr="0A" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="CB0C" memory="C" addr="0C" scanrate="100" type="bool" redis="true" size="10"/>
+	<Tag id="CB0F" memory="C" addr="0F" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="TB0C" memory="T" addr="0C" scanrate="100" type="bool" redis="true" size="10"/>
+	<Tag id="TB0F" memory="T" addr="0F" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="LB0" memory="L" addr="0D" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="DB0" memory="D" addr="0E" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="ZB0" memory="Z" addr="0F" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="SB0" memory="S" addr="600" scanrate="100" type="bool" redis="true" size="1"/>
+	<Tag id="FB2" memory="F" addr="3C0" scanrate="100" type="bool" redis="true" size="16"/>
+	<Tag id="FW1" memory="F" addr="3C" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="FW2" memory="F" addr="9" scanrate="100" type="short" redis="true" size="100"/>
+	<Tag id="NW1" memory="N" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="PW1" memory="P" addr="1" scanrate="100" type="ushort" redis="true" size="1"/>
+	<Tag id="MW1" memory="M" addr="3C" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="KF1" memory="K" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="TF1" memory="T" addr="0" scanrate="100" type="ushort" redis="true" size="1"/>
+	<Tag id="CF1" memory="C" addr="1" scanrate="100" type="ushort" redis="true" size="1"/>
+	<Tag id="LL1" memory="L" addr="60" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="DL1" memory="D" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="ZL1" memory="Z" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="SL1" memory="S" addr="1" scanrate="100" type="ushort" redis="true" size="1"/>
+</Driver>
+
+

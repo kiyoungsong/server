@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="Modbus" type="TCP" ipaddr="127.0.0.1" port="502" engine="Modbus.py" desc="" connectTime="1" requestTime="1" requestCount="3">
+  <Tag id="Test" memory="holdingregister" addr="0" scanrate="100" type="short" redis="true" size="1"/>
+</Driver>

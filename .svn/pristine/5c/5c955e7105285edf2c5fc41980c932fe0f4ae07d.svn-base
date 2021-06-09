@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronWeb", "IronWeb.csproj", "{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronUtilites", "..\Interface\IronUtilites\IronUtilites.csproj", "{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IronClient", "..\Core\IronClient\IronClient.csproj", "{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChartJs.Blazor", "..\..\..\Downloads\ChartJs.Blazor-Release-1.0.3 (1)\ChartJs.Blazor-Release-1.0.3\src\ChartJs.Blazor\ChartJs.Blazor.csproj", "{BE780538-621D-4D21-B986-06B1A8F8BE84}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD457AF-04F1-4BDB-8045-708EA25DD4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9AC3AEA-33C7-4AD3-9116-CF9073DEDD73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B8FDBF-D299-4B0D-93B5-28213E1B1540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE780538-621D-4D21-B986-06B1A8F8BE84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE780538-621D-4D21-B986-06B1A8F8BE84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE780538-621D-4D21-B986-06B1A8F8BE84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE780538-621D-4D21-B986-06B1A8F8BE84}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {552C0050-5031-4D20-9A10-A8D171A21AEB}
+	EndGlobalSection
+EndGlobal

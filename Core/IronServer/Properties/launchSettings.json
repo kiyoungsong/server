@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IronServer": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\Song\\Desktop\\bin\\netcoreapp3.1"
+    }
+  }
+}

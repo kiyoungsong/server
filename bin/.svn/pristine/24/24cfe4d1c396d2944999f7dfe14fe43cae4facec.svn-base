@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Driver id="Memobus" type="UDP" ipServerAddr="192.168.1.1" serverPort="10001" ipClientaddr="192.168.1.95" clientPort="10001" scanmode="0" desc="">
+	<Tag id="MW01" memory="MW" addr="1" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW05" memory="MW" addr="5" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW09" memory="MW" addr="8" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW20" memory="MW" addr="20" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW100" memory="MW" addr="100" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW200" memory="MW" addr="200" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW300" memory="MW" addr="300" scanrate="100" type="short" redis="true" size="1"/>
+	<Tag id="MW400" memory="MW" addr="400" scanrate="100" type="short" redis="true" size="1"/>
+</Driver>

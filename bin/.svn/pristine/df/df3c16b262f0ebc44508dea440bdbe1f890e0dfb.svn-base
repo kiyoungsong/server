@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IronServer>
+	<xs:schema id="IronServer" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xs:element name="IronServer" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+			<xs:complexType>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="Channel">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ID" type="xs:int" minOccurs="0" />
+								<xs:element name="Name" type="xs:string" minOccurs="0" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Device">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ID" type="xs:int" minOccurs="0" />
+								<xs:element name="ChannelID" type="xs:int" minOccurs="0" />
+								<xs:element name="Name" type="xs:string" minOccurs="0" />
+								<xs:element name="Real" type="xs:string" minOccurs="0" />
+								<xs:element name="Thread" type="xs:string" minOccurs="0" />
+								<xs:element name="Log" type="xs:string" minOccurs="0" />
+								<xs:element name="HexNum" type="xs:string" minOccurs="0" />
+								<xs:element name="Swap" type="xs:string" minOccurs="0" />
+								<xs:element name="IOFile" type="xs:string" minOccurs="0" />
+								<xs:element name="DLL" type="xs:string" minOccurs="0" />
+								<xs:element name="ClassName" type="xs:string" minOccurs="0" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+			</xs:complexType>
+		</xs:element>
+	</xs:schema>
+	<Channel>
+		<ID>0</ID>
+		<Name>Yaskawa</Name>
+	</Channel>
+	<Device>
+		<ID>0</ID>
+		<ChannelID>0</ChannelID>
+		<Name>Memobus</Name>
+		<Real>1</Real>
+		<Thread>1</Thread>
+		<Log>1</Log>
+		<HexNum>0</HexNum>
+		<Swap>0</Swap>
+		<IOFile>Memobus.xml</IOFile>
+		<DLL>Yaskawa_Memobus</DLL>
+		<ClassName>Memobus</ClassName>
+	</Device>
+</IronServer>

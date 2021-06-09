@@ -1,0 +1,41 @@
+﻿@page "/DataPage/{PagePath}"
+
+@using Microsoft.EntityFrameworkCore
+@using System.Globalization
+@inject IJSRuntime jsrumtime;
+<!--Remove 예정
+<p>@xmlName</p>
+<div class="row">
+    <div class="col-xl-6">
+        <RadzenTabs Style="height:700px; width:1650px;">
+            <Tabs>
+                <RadzenTabsItem Text="DataView">
+                    <BlazorTable.Table TableItem="@TableTag" Items="@tableTags" PageSize="100" ColumnReorder="true" ShowSearchBar="true">
+                        <BlazorTable.Column TableItem="@TableTag" Title="#" Field="@(x => x.Index)" Sortable="true" DefaultSortColumn="true" Align="Align.Center" Width="3%" />
+                        <BlazorTable.Column TableItem="@TableTag" Title="Name" Field="@(x => x.id)" Sortable="true" Filterable="true" />
+                        <BlazorTable.Column TableItem="@TableTag" Title="Value" Field="@(x => x.Value)" />
+                        <BlazorTable.Column TableItem="@TableTag" Title="Source Time" Field="@(x => x.SourceTime)" Width="15%" />
+                        <BlazorTable.Column TableItem="@TableTag" Title="Server Time" Field="@(x => x.ServerTime)" Width="15%" />
+                        <BlazorTable.Column TableItem="@TableTag" Title="Trend" Width="5%" Align="Align.Center">
+                            <Template>
+                                <Radzen.Blazor.RadzenSwitch @bind-Value="@context.IsTrend" Change="@((x) => OnTrend(context))" />
+                            </Template>
+                        </BlazorTable.Column>
+                        <BlazorTable.Pager ShowPageNumber="true" ShowTotalCount="true" />
+                    </BlazorTable.Table>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Trend">
+                    @if (trendList.Count == 0)
+                    {
+                        <Empty />
+                    }
+                    else
+                    {
+                        <div id="chartdiv"></div>
+                    }
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</div>
+    -->
